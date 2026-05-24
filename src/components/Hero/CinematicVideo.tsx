@@ -1,9 +1,10 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { ForwardedRef, forwardRef, SyntheticEvent, useState, useEffect } from 'react';
+import React, {
+  ForwardedRef,
+  forwardRef,
+  SyntheticEvent,
+  useState,
+  useEffect,
+} from "react";
 
 interface CinematicVideoProps {
   videoUrl: string;
@@ -14,7 +15,7 @@ interface CinematicVideoProps {
 const CinematicVideo = forwardRef(
   (
     { videoUrl, onLoadedMetadata, onError }: CinematicVideoProps,
-    ref: ForwardedRef<HTMLVideoElement>
+    ref: ForwardedRef<HTMLVideoElement>,
   ) => {
     const [localBlobUrl, setLocalBlobUrl] = useState<string | null>(null);
     const [preloadPercent, setPreloadPercent] = useState<number>(0);
@@ -35,17 +36,21 @@ const CinematicVideo = forwardRef(
           let response = await fetch(targetUrl);
           if (!response.ok) {
             // Fall back to remote video url if local hero.mp4 is missing
-            if (videoUrl === '/videos/hero.mp4') {
-              console.log('Local /videos/hero.mp4 not found. Falling back to remote video URL.');
-              targetUrl = 'https://assets.mixkit.co/videos/preview/mixkit-developer-working-on-his-laptop-computer-34289-large.mp4';
+            if (videoUrl === "/videos/hero.mp4") {
+              console.log(
+                "Local /videos/hero.mp4 not found. Falling back to remote video URL.",
+              );
+              targetUrl =
+                "https://assets.mixkit.co/videos/preview/mixkit-developer-working-on-his-laptop-computer-34289-large.mp4";
               response = await fetch(targetUrl);
-              if (!response.ok) throw new Error('Network error downloading timeline');
+              if (!response.ok)
+                throw new Error("Network error downloading timeline");
             } else {
-              throw new Error('Network error downloading timeline');
+              throw new Error("Network error downloading timeline");
             }
           }
 
-          const contentLength = response.headers.get('content-length');
+          const contentLength = response.headers.get("content-length");
           if (!contentLength) {
             // No content-length header, read standard blob directly
             const blob = await response.blob();
@@ -60,7 +65,7 @@ const CinematicVideo = forwardRef(
 
           const totalBytes = parseInt(contentLength, 10);
           const reader = response.body?.getReader();
-          if (!reader) throw new Error('Readable stream not supported');
+          if (!reader) throw new Error("Readable stream not supported");
 
           let loadedBytes = 0;
           const chunks: Uint8Array[] = [];
@@ -80,12 +85,21 @@ const CinematicVideo = forwardRef(
 
           if (!active) return;
 
-          const mergedBlob = new Blob(chunks, { type: 'video/mp4' });
+          const mergedBlob = new Blob(
+            chunks.map(
+              ({ buffer, byteOffset, byteLength }) =>
+                new Uint8Array(buffer, byteOffset, byteLength).slice().buffer,
+            ),
+            { type: "video/mp4" },
+          );
           const bUrl = URL.createObjectURL(mergedBlob);
           setLocalBlobUrl(bUrl);
           setIsPreloadComplete(true);
         } catch (err) {
-          console.warn('CORS or Network issue preloading video. Falling back to native stream.', err);
+          console.warn(
+            "CORS or Network issue preloading video. Falling back to native stream.",
+            err,
+          );
           if (active) {
             setPreloadError(true);
             setIsPreloadComplete(true);
@@ -109,16 +123,21 @@ const CinematicVideo = forwardRef(
     };
 
     const handleVideoError = () => {
-      onError('Unable to process timeline format. Please calibrate direct MP4 source.');
+      onError(
+        "Unable to process timeline format. Please calibrate direct MP4 source.",
+      );
     };
 
     const activeSrc = localBlobUrl || videoUrl;
 
     return (
-      <div id="cinematic-stage" className="relative w-full h-full overflow-hidden bg-[#0A0A0A]">
+      <div
+        id="cinematic-stage"
+        className="relative w-full h-full overflow-hidden bg-[#0A0A0A]"
+      >
         {/* Cinematic gradient overlay layer to integrate video into the physical slate background */}
         <div className="absolute inset-0 z-10 pointer-events-none product-lighting" />
-        
+
         {/* Subtle radial light simulating laptop glow inside the physical operator environment */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vh] rounded-full bg-amber-500/2 opacity-[0.03] blur-[120px] pointer-events-none z-10" />
 
@@ -129,14 +148,14 @@ const CinematicVideo = forwardRef(
         {!isMetadataLoaded && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#0A0A0A]/95 font-mono text-xs text-zinc-500 space-y-4">
             <div className="text-[10px] tracking-[0.4em] text-zinc-400 uppercase animate-pulse">
-              {preloadError 
-                ? 'INITIALIZING ANALOG STREAM PLAYBACK...' 
-                : 'PREBUFFERING CINEMATIC CORE TRANSITIONS...'}
+              {preloadError
+                ? "INITIALIZING ANALOG STREAM PLAYBACK..."
+                : "PREBUFFERING CINEMATIC CORE TRANSITIONS..."}
             </div>
             {!preloadError && (
               <div className="flex flex-col items-center space-y-2">
                 <div className="w-48 h-1 bg-zinc-900 overflow-hidden relative border border-zinc-800">
-                  <div 
+                  <div
                     className="h-full bg-amber-500/80 transition-all duration-300"
                     style={{ width: `${preloadPercent}%` }}
                   />
@@ -160,19 +179,18 @@ const CinematicVideo = forwardRef(
           onLoadedMetadata={handleLoadedMetadata}
           onError={handleVideoError}
           className={`w-full h-full object-cover transition-opacity duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-            isMetadataLoaded ? 'opacity-85' : 'opacity-0'
+            isMetadataLoaded ? "opacity-85" : "opacity-0"
           }`}
           style={{
             // Keep the rendering crisp and hardware accelerated
-            transform: 'translate3d(0, 0, 0)',
+            transform: "translate3d(0, 0, 0)",
           }}
         />
-
       </div>
     );
-  }
+  },
 );
 
-CinematicVideo.displayName = 'CinematicVideo';
+CinematicVideo.displayName = "CinematicVideo";
 
 export default CinematicVideo;

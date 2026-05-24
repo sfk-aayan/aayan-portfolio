@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export class ScrollVideoSynchronizer {
   private video: HTMLVideoElement;
   private videoContainer: HTMLElement | null = null;
@@ -26,12 +21,14 @@ export class ScrollVideoSynchronizer {
       gridElement?: HTMLElement | null;
     },
     scrollContainer?: HTMLElement,
-    customDamping?: number
+    customDamping?: number,
   ) {
     this.video = video;
     if (elements) {
-      if (elements.videoContainer) this.videoContainer = elements.videoContainer;
-      if (elements.overlayElement) this.overlayElement = elements.overlayElement;
+      if (elements.videoContainer)
+        this.videoContainer = elements.videoContainer;
+      if (elements.overlayElement)
+        this.overlayElement = elements.overlayElement;
       if (elements.gridElement) this.gridElement = elements.gridElement;
     }
     if (scrollContainer) this.scrollContainer = scrollContainer;
@@ -41,8 +38,8 @@ export class ScrollVideoSynchronizer {
     this.update = this.update.bind(this);
 
     // Initial binding
-    window.addEventListener('scroll', this.onScroll, { passive: true });
-    window.addEventListener('resize', this.onScroll, { passive: true });
+    window.addEventListener("scroll", this.onScroll, { passive: true });
+    window.addEventListener("resize", this.onScroll, { passive: true });
 
     // Initialize position
     this.onScroll();
@@ -63,7 +60,7 @@ export class ScrollVideoSynchronizer {
       this.targetProgress = 0;
       return;
     }
-    
+
     // Normalize target progress 0.0 to 1.0 within the bounds of the entire page
     this.targetProgress = Math.max(0, Math.min(1, scrollY / scrollBounds));
   }
@@ -73,7 +70,7 @@ export class ScrollVideoSynchronizer {
 
     // Apply linear interpolation for physical weight / momentum
     const diff = this.targetProgress - this.currentProgress;
-    
+
     // If the difference is extremely micro, clamp it to stop operations
     if (Math.abs(diff) < 0.0001) {
       this.currentProgress = this.targetProgress;
@@ -86,10 +83,13 @@ export class ScrollVideoSynchronizer {
     // has enough data to seek — avoids silent no-ops on cold load.
     if (this.video && this.video.duration && this.video.readyState >= 2) {
       const targetTime = this.currentProgress * this.video.duration;
-      
+
       // Only set currentTime if there is a distinct difference to avoid browser overhead
       if (Math.abs(this.video.currentTime - targetTime) > 0.01) {
-        this.video.currentTime = Math.max(0, Math.min(this.video.duration - 0.01, targetTime));
+        this.video.currentTime = Math.max(
+          0,
+          Math.min(this.video.duration - 0.01, targetTime),
+        );
       }
     }
 
@@ -108,8 +108,8 @@ export class ScrollVideoSynchronizer {
 
   public destroy() {
     this.isDestroyed = true;
-    window.removeEventListener('scroll', this.onScroll);
-    window.removeEventListener('resize', this.onScroll);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("resize", this.onScroll);
     if (this.rafid) {
       cancelAnimationFrame(this.rafid);
     }

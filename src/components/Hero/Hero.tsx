@@ -1,11 +1,6 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useEffect, useState } from 'react';
-import { BACKEND_PROFILE } from '../../data';
-import { Terminal, Shield, Cpu, ChevronDown } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { BACKEND_PROFILE } from "../../data";
+import { Terminal, Shield, Cpu, ChevronDown } from "lucide-react";
 
 export default function Hero() {
   const [glitchActive, setGlitchActive] = useState(false);
@@ -13,11 +8,11 @@ export default function Hero() {
 
   // Simulate terminal boot sequence on mount
   const BOOT_LOG = [
-    '> initializing Django application server... [OK]',
-    '> binding DRF API gateway interfaces... [OK]',
-    '> loading SSLCommerz payment adapter... [OK]',
-    '> n8n workflow orchestrator: online... [ACTIVE]',
-    '> user@sfk:~$ _',
+    "> initializing Django application server... [OK]",
+    "> binding DRF API gateway interfaces... [OK]",
+    "> loading SSLCommerz payment adapter... [OK]",
+    "> n8n workflow orchestrator: online... [ACTIVE]",
+    "> user@sfk:~$ _",
   ];
 
   useEffect(() => {
@@ -48,10 +43,8 @@ export default function Hero() {
       id="section-hero"
       className="relative w-full min-h-screen flex flex-col justify-between px-6 py-0 md:px-12 select-none bg-transparent overflow-hidden"
     >
-
       {/* ── Top Header ── */}
       <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row md:items-start justify-between gap-6 pt-24 lg:pt-28 relative z-30">
-
         {/* Name + Title Block */}
         <div className="flex flex-col space-y-3 max-w-lg">
           <span className="flex items-center space-x-2 text-[10px] tracking-[0.45em] font-mono text-zinc-500 uppercase">
@@ -62,16 +55,16 @@ export default function Hero() {
           {/* Main Name — large, bold, glitch effect */}
           <h1
             className={`text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight font-display leading-none ${
-              glitchActive ? 'hover-glitch text-amber-400' : 'text-zinc-100'
+              glitchActive ? "hover-glitch text-amber-400" : "text-zinc-100"
             } transition-colors duration-150`}
           >
-            {BACKEND_PROFILE.name.split(' // ')[0]}
+            {BACKEND_PROFILE.name.split(" // ")[0]}
           </h1>
 
           {/* Sub-label from name after // */}
-          {BACKEND_PROFILE.name.includes(' // ') && (
+          {BACKEND_PROFILE.name.includes(" // ") && (
             <div className="text-[11px] font-mono text-amber-500/70 tracking-[0.35em] uppercase font-medium">
-              {BACKEND_PROFILE.name.split(' // ')[1]}
+              {BACKEND_PROFILE.name.split(" // ")[1]}
             </div>
           )}
 
@@ -105,7 +98,6 @@ export default function Hero() {
 
       {/* ── Bottom: Terminal Boot Log + Scroll Prompt ── */}
       <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row items-end justify-between gap-6 pb-10 relative z-30">
-
         {/* Terminal Boot Log */}
         <div className="w-full lg:w-auto bg-[#030304]/90 border border-zinc-900 p-4 rounded-md font-mono text-[9px] text-zinc-500 max-w-sm">
           <div className="flex items-center space-x-2 text-zinc-400 tracking-wider mb-2.5 uppercase font-semibold border-b border-zinc-900 pb-2">
@@ -118,8 +110,8 @@ export default function Hero() {
                 key={i}
                 className={
                   i === bootLines.length - 1
-                    ? 'text-amber-500/80 font-semibold terminal-cursor'
-                    : 'text-zinc-600'
+                    ? "text-amber-500/80 font-semibold terminal-cursor"
+                    : "text-zinc-600"
                 }
               >
                 {line}

@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export const motionConfig = {
   ease: [0.4, 0, 0.2, 1], // Standard physical easing curve
   duration: {

@@ -1,18 +1,13 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React from 'react';
-import { SystemModule } from '../../types';
-import { Terminal, Cpu, ShieldAlert, Activity } from 'lucide-react';
+import { SystemModule } from "../../types";
+import { Terminal, Cpu, Activity } from "lucide-react";
 
 interface ProjectCardProps {
   module: SystemModule;
 }
 
 export default function ProjectCard({ module }: ProjectCardProps) {
-  const isHealthy = module.status === 'ACTIVE' || module.status === 'OPERATIONAL';
+  const isHealthy =
+    module.status === "ACTIVE" || module.status === "OPERATIONAL";
 
   return (
     <div
@@ -25,10 +20,8 @@ export default function ProjectCard({ module }: ProjectCardProps) {
       <div className="absolute bottom-0 left-0 w-px h-0 bg-gradient-to-t from-amber-500 to-transparent group-hover:h-full transition-all duration-700 pointer-events-none" />
 
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-        
         {/* Core Metadata Segment */}
         <div className="lg:w-1/3 flex flex-col space-y-4">
-          
           {/* Module Identifier Code */}
           <div className="flex items-center space-x-2 text-[10px] tracking-[0.3em] font-mono text-zinc-500 select-none">
             <span className="text-cyan-500 font-semibold">[{module.id}]</span>
@@ -45,17 +38,28 @@ export default function ProjectCard({ module }: ProjectCardProps) {
           <div className="flex items-center space-x-4 text-[10px] tracking-widest font-mono text-zinc-500">
             <div className="flex items-center space-x-2">
               <span className="relative flex h-2 w-2">
-                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isHealthy ? 'bg-emerald-500' : 'bg-rose-500'} opacity-75`}></span>
-                <span className={`relative inline-flex rounded-full h-2 w-2 ${isHealthy ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
+                <span
+                  className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isHealthy ? "bg-emerald-500" : "bg-rose-500"} opacity-75`}
+                ></span>
+                <span
+                  className={`relative inline-flex rounded-full h-2 w-2 ${isHealthy ? "bg-emerald-500" : "bg-rose-500"}`}
+                ></span>
               </span>
-              <span className={`uppercase font-semibold ${isHealthy ? 'text-emerald-500' : 'text-rose-500'}`}>
+              <span
+                className={`uppercase font-semibold ${isHealthy ? "text-emerald-500" : "text-rose-500"}`}
+              >
                 {module.status}
               </span>
             </div>
             <span className="text-zinc-800">|</span>
             <div className="flex items-center space-x-1.5">
               <Cpu size={10} className="text-cyan-500" />
-              <span>REV: <span className="text-cyan-400 font-semibold">{module.version}</span></span>
+              <span>
+                REV:{" "}
+                <span className="text-cyan-400 font-semibold">
+                  {module.version}
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -73,7 +77,7 @@ export default function ProjectCard({ module }: ProjectCardProps) {
               <Terminal size={11} className="text-amber-500" />
               <span>TECHNICAL_EXECUTION_LOG // SH_STDOUT</span>
             </div>
-            
+
             <div className="bg-[#040405] border border-zinc-900/80 p-4 rounded clip-tech-corners font-mono text-xs text-zinc-400 space-y-3.5 group-hover:border-zinc-800 transition-colors duration-300">
               <ul className="space-y-3.5 leading-relaxed">
                 {module.technicalBreakdown.map((point, index) => (
@@ -107,7 +111,6 @@ export default function ProjectCard({ module }: ProjectCardProps) {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </div>
