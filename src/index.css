@@ -1,0 +1,155 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #060606;
+    color: #F4F4F5;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+  }
+
+  /* Custom minimal monospaced scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #030303;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #18181b;
+    border: 1px solid #27272a;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f59e0b;
+    border-color: #f59e0b;
+  }
+}
+
+/* Background Systems Engineering Cyber-Grid */
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, rgba(245, 158, 11, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 158, 11, 0.025) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center;
+}
+
+.cyber-grid-cyan {
+  background-image: 
+    linear-gradient(to right, rgba(6, 182, 212, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.015) 1px, transparent 1px);
+  background-size: 25px 25px;
+  background-position: center;
+}
+
+/* Cinematic product lighting to blend the video layer into physical viewport space */
+.product-lighting {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(6, 6, 6, 0.1) 20%,
+    rgba(6, 6, 6, 0.5) 60%,
+    rgba(6, 6, 6, 0.98) 100%
+  );
+}
+
+/* Neon glow classes */
+.glow-amber {
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.06), inset 0 0 12px rgba(245, 158, 11, 0.02);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.06), inset 0 0 12px rgba(6, 182, 212, 0.02);
+}
+
+.glow-text-amber {
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.35);
+}
+
+/* Scanline visual FX for video playback card */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+  z-index: 10;
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+@keyframes scanline-anim {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scanline-bar {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(245, 158, 11, 0.06), transparent);
+  animation: scanline-anim 8s linear infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Blinking terminal block cursor */
+.terminal-cursor::after {
+  content: '█';
+  animation: cursor-blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes cursor-blink {
+  from, to { opacity: 0; }
+  50% { opacity: 1; color: #f59e0b; }
+}
+
+/* Cyber tech border clip-path options */
+.clip-tech-corners {
+  clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+.clip-tech-sm {
+  clip-path: polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%);
+}
+
+/* Glitch animation helpers */
+@keyframes glitch-anim-1 {
+  0% { clip: rect(20px, 9999px, 66px, 0); }
+  5% { clip: rect(45px, 9999px, 85px, 0); }
+  10% { clip: rect(12px, 9999px, 115px, 0); }
+  15% { clip: rect(89px, 9999px, 15px, 0); }
+  20% { clip: rect(33px, 9999px, 50px, 0); }
+  100% { clip: rect(0, 0, 0, 0); }
+}
+
+.hover-glitch:hover {
+  animation: glitch-anim-1 0.4s linear infinite;
+}
