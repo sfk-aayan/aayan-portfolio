@@ -1,4 +1,4 @@
-import React, {
+import {
   ForwardedRef,
   forwardRef,
   SyntheticEvent,
@@ -35,24 +35,11 @@ const CinematicVideo = forwardRef(
           let targetUrl = videoUrl;
           let response = await fetch(targetUrl);
           if (!response.ok) {
-            // Fall back to remote video url if local hero.mp4 is missing
-            if (videoUrl === "/videos/hero.mp4") {
-              console.log(
-                "Local /videos/hero.mp4 not found. Falling back to remote video URL.",
-              );
-              targetUrl =
-                "https://assets.mixkit.co/videos/preview/mixkit-developer-working-on-his-laptop-computer-34289-large.mp4";
-              response = await fetch(targetUrl);
-              if (!response.ok)
-                throw new Error("Network error downloading timeline");
-            } else {
-              throw new Error("Network error downloading timeline");
-            }
+            throw new Error("Network error");
           }
 
           const contentLength = response.headers.get("content-length");
           if (!contentLength) {
-            // No content-length header, read standard blob directly
             const blob = await response.blob();
             if (active) {
               const bUrl = URL.createObjectURL(blob);

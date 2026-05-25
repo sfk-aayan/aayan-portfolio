@@ -8,19 +8,25 @@ import {
   Certification,
 } from "./types";
 
+export const SOCIAL_LINKS = {
+  GITHUB: "https://github.com/sfk-aayan",
+  LINKEDIN: "https://www.linkedin.com/in/shaikh-faiyaz-karim",
+};
+
 export const BACKEND_PROFILE: DeveloperProfile = {
   name: "SFK // FAIYAZ KARIM",
   title: "Software Engineer",
-  bio: "Backend-focused software engineer with hands-on production experience in Django, Go, and cloud-native systems. Passionate about clean API design, AI tooling, and building reliable distributed services.",
+  bio: "Backend-focused software engineer and gamer with production experience in Django and FastAPI, plus hands-on work across Go, Laravel, and .NET. Passionate about clean API design, AI tooling, and building reliable distributed services.",
   skills: {
-    LANGUAGES: ["Python", "Go", "Java", "JavaScript", "C#", "HTML", "CSS"],
+    LANGUAGES: ["Python", "Go", "PHP", "C#", "JavaScript", "Java"],
     "FRAMEWORKS & LIBRARIES": [
       "Django",
+      "FastAPI",
       "DRF",
-      "Gin",
-      "GORM",
-      "React",
+      "Laravel",
       "ASP.NET",
+      "Gin",
+      "React",
       "Qiskit",
     ],
     DATABASES: [
@@ -64,6 +70,8 @@ export const WORK_EXPERIENCE: WorkExperience[] = [
       "Helped launch Probashi Prohori, enabling non-resident Bangladeshis to purchase insurance online, expanding digital access.",
       "Enhanced system interoperability by developing DRF-based APIs for multiple third-party partners.",
       "Partnered with BRAC to co-develop a loan insurance portal using Django, speeding up employee onboarding.",
+      "Developed the backend for Guardian's new billing portal using Django and DRF, streamlining internal payment operations.",
+      "Built the backend for the company's upcoming public website using FastAPI, currently in pre-launch staging.",
       "Integrated SSLCommerz payment gateways into two flagship platforms, boosting payment reliability and conversion rates.",
       "Both high-impact web solutions supported a 20% revenue increase in the microfinance department.",
       "Increased automated claims processing speed by 15% through backend workflow optimisations.",
@@ -170,7 +178,7 @@ export const PHILOSOPHY_NODES: PhilosophyNode[] = [
     principle: "Clean Contracts, Reliable Systems",
     description:
       "Good software starts with well-defined interfaces. Whether building for third-party partners or internal tools, the API contract is the foundation of trust between services.",
-    metric: "DRF · GraphQL · REST",
+    metric: "DRF · FastAPI · REST",
   },
   {
     title: "AUTOMATION BIAS",
@@ -188,7 +196,6 @@ export const PHILOSOPHY_NODES: PhilosophyNode[] = [
   },
 ];
 
-// Peer-reviewed / conference publications
 export const PUBLICATIONS: Publication[] = [
   {
     id: "PUB-01",
@@ -212,7 +219,6 @@ export const PUBLICATIONS: Publication[] = [
   },
 ];
 
-// Courses & certifications
 export const CERTIFICATIONS: Certification[] = [
   {
     id: "CERT-01",

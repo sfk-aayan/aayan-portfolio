@@ -6,48 +6,50 @@ import {
   CERTIFICATIONS,
 } from "../../data";
 import ProjectCard from "./ProjectCard";
-import {
-  Terminal,
-  Cpu,
-  Layers,
-  GitCommit,
-  GitBranch,
-  ArrowUpRight,
-  BookOpen,
-  Clock,
-} from "lucide-react";
+import { Layers, ArrowUpRight, Clock } from "lucide-react";
+import { useTypewriter } from "../../hooks/useTypewriter";
 
 export default function ProjectsSection() {
+  const {
+    displayed: typedBio,
+    isDone: bioTyped,
+    ref: bioRef,
+  } = useTypewriter(BACKEND_PROFILE.bio, { speed: 14, startDelay: 200 });
   return (
     <div className="w-full bg-[#060606] relative z-10">
       {/* =========================================================================
-          SECTION 01: OPERATOR BIO & SKILLS (Docks Video to the Right)
+          SECTION 01: OPERATOR PROFILE (Docks Video to the Right)
           ========================================================================= */}
       <section
         id="section-bio"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          {/* Content Block (Left Column) */}
           <div className="lg:col-span-7 flex flex-col space-y-6 text-left">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-amber-500/80 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                <span>NODE_01 // BIO DEFINITION</span>
+                <span>NODE_01 // OPERATOR PROFILE</span>
               </span>
               <h2 className="text-3xl font-light tracking-tight text-zinc-100 font-display">
                 The Operator
               </h2>
               <div className="font-mono text-[9px] text-zinc-600 tracking-wider uppercase select-none">
-                SYSTEM INTERFACE INTROSPECT LOG
+                BACKEND ENGINEER // DJANGO · FASTAPI · PYTHON
               </div>
             </div>
 
-            <p className="text-zinc-300 text-sm md:text-base font-light leading-relaxed font-mono bg-zinc-950/40 p-4 border border-zinc-900 rounded-md">
-              {BACKEND_PROFILE.bio}
+            <p
+              ref={bioRef as React.RefObject<HTMLParagraphElement>}
+              className="text-zinc-300 text-sm md:text-base font-light leading-relaxed font-mono bg-zinc-950/40 p-4 border border-zinc-900 rounded-md min-h-[80px]"
+            >
+              {typedBio}
+              {/* Blinking cursor — disappears when typing is done */}
+              {!bioTyped && (
+                <span className="inline-block w-[7px] h-[13px] bg-amber-500 ml-0.5 align-middle animate-pulse" />
+              )}
             </p>
 
-            {/* Core Capability Array Matrix */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-zinc-900/70">
               {Object.entries(BACKEND_PROFILE.skills).map(
                 ([category, items]) => (
@@ -72,38 +74,36 @@ export default function ProjectsSection() {
             </div>
           </div>
 
-          {/* Docking Space Slot (Right Column) */}
+          {/* Docking Space Slot */}
           <div className="hidden lg:block lg:col-span-5" />
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 02: WORK EXPERIENCE (Docks Video to the Left)
+          SECTION 02: DEPLOYMENT HISTORY (Docks Video to the Left)
           ========================================================================= */}
       <section
         id="section-experience"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          {/* Docking Space Slot (Left Column) */}
+          {/* Docking Space Slot */}
           <div className="hidden lg:block lg:col-span-5" />
 
-          {/* Content Block (Right Column) */}
           <div className="lg:col-span-7 flex flex-col space-y-6 text-left lg:pl-6">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-cyan-400 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                <span>NODE_02 // SYSTEM HISTORIC LOG</span>
+                <span>NODE_02 // DEPLOYMENT HISTORY</span>
               </span>
               <h2 className="text-3xl font-light tracking-tight text-zinc-100 font-display">
                 Work Experience
               </h2>
               <div className="text-xs font-mono text-zinc-600 tracking-wider uppercase select-none">
-                VERIFIED ARCHITECTURE COORDINATE CHRONOLOGY
+                DEC 2022 – PRESENT // 3 ENGAGEMENTS
               </div>
             </div>
 
-            {/* Vertical timeline box */}
             <div className="relative flex flex-col space-y-8 pl-6 md:pl-8 mt-4">
               <div className="absolute left-[3px] top-4 bottom-4 w-px bg-gradient-to-b from-cyan-500/40 via-zinc-800 to-amber-500/40" />
 
@@ -112,7 +112,6 @@ export default function ProjectsSection() {
                   key={exp.id}
                   className="group relative flex flex-col space-y-2.5"
                 >
-                  {/* Timeline target point */}
                   <div className="absolute -left-[27px] md:-left-[35px] top-1.5 w-3 h-3 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center group-hover:border-cyan-500 transition-colors duration-300">
                     <span className="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-cyan-500 transition-colors duration-300" />
                   </div>
@@ -159,25 +158,24 @@ export default function ProjectsSection() {
       </section>
 
       {/* =========================================================================
-          SECTION 03: TECHNICAL CONTRIBUTION & PROJECTS (Docks Video to the Right)
+          SECTION 03: PRODUCTION SYSTEMS (Docks Video to the Right)
           ========================================================================= */}
       <section
         id="section-projects"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          {/* Content Block (Left Column) */}
           <div className="lg:col-span-7 flex flex-col space-y-6 text-left">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-zinc-500 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                <span>NODE_03 // CORE TECHNICAL PILLARS</span>
+                <span>NODE_03 // PRODUCTION SYSTEMS</span>
               </span>
               <h2 className="text-3xl font-light tracking-tight text-zinc-100 font-display">
                 Technical Contributions
               </h2>
               <div className="text-xs font-mono text-zinc-600 tracking-wider uppercase select-none">
-                DENSE COMPLIANCE STACK & PERFORMANCE SPECS
+                FINTECH · AI · MOBILE // {SYSTEM_MODULES.length} ACTIVE SYSTEMS
               </div>
             </div>
 
@@ -188,50 +186,48 @@ export default function ProjectsSection() {
             </div>
           </div>
 
-          {/* Docking Space Slot (Right Column) */}
+          {/* Docking Space Slot */}
           <div className="hidden lg:block lg:col-span-5" />
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 04: RESEARCH & DEEP-TECH PUBLICATIONS (Docks Video to the Left)
+          SECTION 04: RESEARCH & CREDENTIALS (Docks Video to the Left)
           ========================================================================= */}
       <section
         id="section-research"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
         <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          {/* Docking Space Slot (Left Column) */}
+          {/* Docking Space Slot */}
           <div className="hidden lg:block lg:col-span-5" />
 
-          {/* Content Block (Right Column) */}
           <div className="lg:col-span-7 flex flex-col space-y-6 text-left lg:pl-6">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-cyan-400 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                <span>NODE_04 // DEEP TECH LABS</span>
+                <span>NODE_04 // RESEARCH & CREDENTIALS</span>
               </span>
               <h2 className="text-3xl font-light tracking-tight text-zinc-100 font-display">
                 Publications & Certifications
               </h2>
               <div className="text-xs font-mono text-zinc-600 tracking-wider uppercase select-none">
-                SPECULATIVE ALGORITHMS & SYSTEMS PERFORMANCE DATA
+                IEEE PUBLICATION · QUANTUM ML · {CERTIFICATIONS.length}{" "}
+                CERTIFICATIONS
               </div>
             </div>
 
-            {/* Research Paper Cards */}
+            {/* Publications */}
             <div className="space-y-6 mt-4">
               {PUBLICATIONS.map((pub) => (
                 <div
                   key={pub.id}
                   className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60"
                 >
-                  {/* Decorative glowing lines */}
                   <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
                   <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
 
                   <div className="flex flex-col space-y-2">
-                    {/* Header: ID, Publication & Date */}
                     <div className="flex flex-wrap items-center justify-between text-[10px] font-mono text-zinc-500 gap-2 select-none">
                       <span className="text-cyan-500 font-semibold">
                         {pub.id} // {pub.venue}
@@ -242,17 +238,14 @@ export default function ProjectsSection() {
                       </span>
                     </div>
 
-                    {/* Paper Title */}
                     <h3 className="text-base font-normal tracking-tight text-zinc-200 font-display group-hover:text-amber-500 transition-colors duration-300 pt-1">
                       {pub.title}
                     </h3>
 
-                    {/* Paper Summary */}
                     <p className="text-xs font-mono text-zinc-400 leading-relaxed font-light py-2">
                       {pub.summary}
                     </p>
 
-                    {/* Footer tags and read anchor */}
                     <div className="flex items-center justify-between gap-4 pt-2 border-t border-zinc-900/60">
                       <div className="flex flex-wrap gap-1">
                         {pub.tags.map((tag) => (
@@ -264,7 +257,6 @@ export default function ProjectsSection() {
                           </span>
                         ))}
                       </div>
-
                       <a
                         href={pub.link}
                         className="flex items-center space-x-1 text-[9px] font-mono text-zinc-400 group-hover:text-cyan-400 transition-colors duration-200 font-medium"
@@ -278,20 +270,17 @@ export default function ProjectsSection() {
               ))}
             </div>
 
-            {/* Certifications Cards */}
+            {/* Certifications */}
             <div className="space-y-6 mt-4">
               {CERTIFICATIONS.map((cert) => (
                 <div
                   key={cert.id}
                   className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60"
                 >
-                  {/* Top-left connector */}
                   <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-amber-500/60 transition-colors duration-300" />
-                  {/* Bottom-right connector */}
                   <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
 
                   <div className="flex flex-col space-y-2">
-                    {/* Header: ID, Issuer & Date */}
                     <div className="flex flex-wrap items-center justify-between text-[10px] font-mono text-zinc-500 gap-2 select-none">
                       <span className="text-amber-500 font-semibold">
                         {cert.id} // {cert.issuer}
@@ -302,17 +291,14 @@ export default function ProjectsSection() {
                       </span>
                     </div>
 
-                    {/* Certification Title */}
                     <h3 className="text-base font-normal tracking-tight text-zinc-200 font-display group-hover:text-cyan-400 transition-colors duration-300 pt-1">
                       {cert.title}
                     </h3>
 
-                    {/* Certification Summary */}
                     <p className="text-xs font-mono text-zinc-400 leading-relaxed font-light py-2">
                       {cert.summary}
                     </p>
 
-                    {/* Footer tags and credential link */}
                     <div className="flex items-center justify-between gap-4 pt-2 border-t border-zinc-900/60">
                       <div className="flex flex-wrap gap-1">
                         {cert.tags.map((tag) => (
@@ -324,7 +310,6 @@ export default function ProjectsSection() {
                           </span>
                         ))}
                       </div>
-
                       <a
                         href={cert.link}
                         className="flex items-center space-x-1 text-[9px] font-mono text-zinc-400 group-hover:text-amber-400 transition-colors duration-200 font-medium"

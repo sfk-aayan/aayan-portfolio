@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { PHILOSOPHY_NODES } from "../../data";
-import { Shield, Hammer, Compass, GitBranch, ShieldAlert } from "lucide-react";
+import { Shield, Hammer, Compass, GitBranch } from "lucide-react";
+import { useLiveUTC } from "../../hooks/useLiveUTC";
 
 export default function PhilosophySection() {
-  const [liveUTC, setLiveUTC] = useState("");
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setLiveUTC(new Date().toISOString());
-    }, 500);
-    return () => clearInterval(timer);
-  }, []);
+  const liveUTC = useLiveUTC(500);
 
   const getIcon = (title: string) => {
     switch (title.toLowerCase()) {

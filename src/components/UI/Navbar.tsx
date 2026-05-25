@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Shield, Cpu } from "lucide-react";
+import { Shield, Cpu, Github, Linkedin } from "lucide-react";
+import { SOCIAL_LINKS } from "../../data";
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(true);
@@ -7,7 +8,6 @@ export default function Navbar() {
 
   useEffect(() => {
     function handleScroll() {
-      // Hide the navbar rapidly when user scrolls past 60px to clear viewport space
       if (window.scrollY > 60) {
         setIsVisible(false);
       } else {
@@ -15,7 +15,6 @@ export default function Navbar() {
       }
     }
 
-    // Dynamic digital clock update simulating microsecond clock syncing
     const timer = setInterval(() => {
       const d = new Date();
       const timeStr = d.toISOString().replace("T", " ").substring(0, 19) + "Z";
@@ -37,11 +36,11 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between pointer-events-auto bg-[#070708]/75 backdrop-blur-md border border-zinc-800/60 px-5 py-3 rounded clip-tech-sm glow-cyan">
-        {/* Structural Logo/System Label */}
+        {/* Logo / System Label */}
         <div className="flex items-center space-x-3 text-[10px] tracking-[0.25em] font-mono text-zinc-500">
           <div className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
           </div>
           <span className="text-zinc-200 font-semibold tracking-widest font-display">
             FOUNDER_OPERATOR
@@ -51,8 +50,9 @@ export default function Navbar() {
           </span>
         </div>
 
-        {/* Technical coordinate indicators */}
-        <div className="flex items-center space-x-6 md:space-x-8 text-[9px] tracking-[0.25em] font-mono text-zinc-400">
+        {/* Right side — indicators + social links */}
+        <div className="flex items-center space-x-4 md:space-x-6 text-[9px] tracking-[0.25em] font-mono text-zinc-400">
+          {/* System indicators */}
           <div className="hidden md:flex items-center space-x-1.5">
             <Cpu size={10} className="text-amber-500" />
             <span>
@@ -74,6 +74,31 @@ export default function Navbar() {
             <span className="text-zinc-400">
               {systemTime || "2026-05-24 20:03:52Z"}
             </span>
+          </div>
+
+          {/* Divider */}
+          <span className="hidden sm:block border-l border-zinc-800 h-3" />
+
+          {/* Social links */}
+          <div className="flex items-center space-x-3">
+            <a
+              href={SOCIAL_LINKS.GITHUB}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="text-zinc-500 hover:text-amber-500 transition-colors duration-200"
+            >
+              <Github size={13} />
+            </a>
+            <a
+              href={SOCIAL_LINKS.LINKEDIN}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="text-zinc-500 hover:text-cyan-400 transition-colors duration-200"
+            >
+              <Linkedin size={13} />
+            </a>
           </div>
         </div>
       </div>

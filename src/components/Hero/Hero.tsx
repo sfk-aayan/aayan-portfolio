@@ -8,9 +8,9 @@ export default function Hero() {
 
   // Simulate terminal boot sequence on mount
   const BOOT_LOG = [
-    "> initializing Django application server... [OK]",
+    "> initializing FastAPI application server... [OK]",
     "> binding DRF API gateway interfaces... [OK]",
-    "> loading SSLCommerz payment adapter... [OK]",
+    "> loading Cloud Infrastructure Services... [OK]",
     "> n8n workflow orchestrator: online... [ACTIVE]",
     "> user@sfk:~$ _",
   ];
