@@ -8,6 +8,7 @@ import {
 import ProjectCard from "./ProjectCard";
 import { Layers, ArrowUpRight, Clock } from "lucide-react";
 import { useTypewriter } from "../../hooks/useTypewriter";
+import ScanReveal from "../UI/ScanReveal";
 
 export default function ProjectsSection() {
   const {
@@ -180,8 +181,10 @@ export default function ProjectsSection() {
             </div>
 
             <div className="flex flex-col mt-4">
-              {SYSTEM_MODULES.map((module) => (
-                <ProjectCard key={module.id} module={module} />
+              {SYSTEM_MODULES.map((module, i) => (
+                <ScanReveal key={module.id} delay={i * 80} color="amber">
+                  <ProjectCard module={module} />
+                </ScanReveal>
               ))}
             </div>
           </div>
@@ -219,107 +222,108 @@ export default function ProjectsSection() {
 
             {/* Publications */}
             <div className="space-y-6 mt-4">
-              {PUBLICATIONS.map((pub) => (
-                <div
-                  key={pub.id}
-                  className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60"
-                >
-                  <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
-                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
+              {PUBLICATIONS.map((pub, i) => (
+                <ScanReveal key={pub.id} delay={i * 80} color="amber">
+                  <div className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60">
+                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
 
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex flex-wrap items-center justify-between text-[10px] font-mono text-zinc-500 gap-2 select-none">
-                      <span className="text-cyan-500 font-semibold">
-                        {pub.id} // {pub.venue}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={10} className="text-zinc-600" />
-                        {pub.date}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base font-normal tracking-tight text-zinc-200 font-display group-hover:text-amber-500 transition-colors duration-300 pt-1">
-                      {pub.title}
-                    </h3>
-
-                    <p className="text-xs font-mono text-zinc-400 leading-relaxed font-light py-2">
-                      {pub.summary}
-                    </p>
-
-                    <div className="flex items-center justify-between gap-4 pt-2 border-t border-zinc-900/60">
-                      <div className="flex flex-wrap gap-1">
-                        {pub.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[8px] font-mono text-zinc-500 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-900"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex flex-wrap items-center justify-between text-[10px] font-mono text-zinc-500 gap-2 select-none">
+                        <span className="text-cyan-500 font-semibold">
+                          {pub.id} // {pub.venue}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock size={10} className="text-zinc-600" />
+                          {pub.date}
+                        </span>
                       </div>
-                      <a
-                        href={pub.link}
-                        className="flex items-center space-x-1 text-[9px] font-mono text-zinc-400 group-hover:text-cyan-400 transition-colors duration-200 font-medium"
-                      >
-                        <span>READ_SPEC</span>
-                        <ArrowUpRight size={10} />
-                      </a>
+
+                      <h3 className="text-base font-normal tracking-tight text-zinc-200 font-display group-hover:text-amber-500 transition-colors duration-300 pt-1">
+                        {pub.title}
+                      </h3>
+
+                      <p className="text-xs font-mono text-zinc-400 leading-relaxed font-light py-2">
+                        {pub.summary}
+                      </p>
+
+                      <div className="flex items-center justify-between gap-4 pt-2 border-t border-zinc-900/60">
+                        <div className="flex flex-wrap gap-1">
+                          {pub.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-[8px] font-mono text-zinc-500 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-900"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <a
+                          href={pub.link}
+                          className="flex items-center space-x-1 text-[9px] font-mono text-zinc-400 group-hover:text-cyan-400 transition-colors duration-200 font-medium"
+                        >
+                          <span>READ_SPEC</span>
+                          <ArrowUpRight size={10} />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </ScanReveal>
               ))}
             </div>
 
             {/* Certifications */}
             <div className="space-y-6 mt-4">
-              {CERTIFICATIONS.map((cert) => (
-                <div
-                  key={cert.id}
-                  className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60"
-                >
-                  <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-amber-500/60 transition-colors duration-300" />
-                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
+              {CERTIFICATIONS.map((cert, i) => (
+                <ScanReveal>
+                  <div
+                    key={cert.id}
+                    className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60"
+                  >
+                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-amber-500/60 transition-colors duration-300" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
 
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex flex-wrap items-center justify-between text-[10px] font-mono text-zinc-500 gap-2 select-none">
-                      <span className="text-amber-500 font-semibold">
-                        {cert.id} // {cert.issuer}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={10} className="text-zinc-600" />
-                        {cert.date}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base font-normal tracking-tight text-zinc-200 font-display group-hover:text-cyan-400 transition-colors duration-300 pt-1">
-                      {cert.title}
-                    </h3>
-
-                    <p className="text-xs font-mono text-zinc-400 leading-relaxed font-light py-2">
-                      {cert.summary}
-                    </p>
-
-                    <div className="flex items-center justify-between gap-4 pt-2 border-t border-zinc-900/60">
-                      <div className="flex flex-wrap gap-1">
-                        {cert.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[8px] font-mono text-zinc-500 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-900"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex flex-wrap items-center justify-between text-[10px] font-mono text-zinc-500 gap-2 select-none">
+                        <span className="text-amber-500 font-semibold">
+                          {cert.id} // {cert.issuer}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock size={10} className="text-zinc-600" />
+                          {cert.date}
+                        </span>
                       </div>
-                      <a
-                        href={cert.link}
-                        className="flex items-center space-x-1 text-[9px] font-mono text-zinc-400 group-hover:text-amber-400 transition-colors duration-200 font-medium"
-                      >
-                        <span>VIEW_CREDENTIAL</span>
-                        <ArrowUpRight size={10} />
-                      </a>
+
+                      <h3 className="text-base font-normal tracking-tight text-zinc-200 font-display group-hover:text-cyan-400 transition-colors duration-300 pt-1">
+                        {cert.title}
+                      </h3>
+
+                      <p className="text-xs font-mono text-zinc-400 leading-relaxed font-light py-2">
+                        {cert.summary}
+                      </p>
+
+                      <div className="flex items-center justify-between gap-4 pt-2 border-t border-zinc-900/60">
+                        <div className="flex flex-wrap gap-1">
+                          {cert.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-[8px] font-mono text-zinc-500 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-900"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        <a
+                          href={cert.link}
+                          className="flex items-center space-x-1 text-[9px] font-mono text-zinc-400 group-hover:text-amber-400 transition-colors duration-200 font-medium"
+                        >
+                          <span>VIEW_CREDENTIAL</span>
+                          <ArrowUpRight size={10} />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </ScanReveal>
               ))}
             </div>
           </div>

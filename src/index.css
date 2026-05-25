@@ -196,3 +196,17 @@
 .hover-glitch:hover {
   animation: glitch-anim-1 0.4s linear infinite;
 }
+
+@keyframes scanSweep {
+  0% {
+    top: -2px;
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
