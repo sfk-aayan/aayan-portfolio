@@ -75,3 +75,17 @@ export interface Certification {
   tags: string[];
   link: string;
 }
+
+export interface ScanRevealProps {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  color?: "cyan" | "amber";
+}
+
+export interface GlitchHeaderProps {
+  title: string;
+  subtitle: string;
+  node: string;
+  color?: "amber" | "cyan" | "emerald";
+}

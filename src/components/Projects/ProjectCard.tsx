@@ -1,116 +1,129 @@
+import { useState, useRef } from "react";
+import { Terminal, Cpu, Activity, ArrowRight } from "lucide-react";
 import { SystemModule } from "../../types";
-import { Terminal, Cpu, Activity } from "lucide-react";
 
-interface ProjectCardProps {
-  module: SystemModule;
-}
+export default function ProjectCard({ module }: { module: SystemModule }) {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
 
-export default function ProjectCard({ module }: ProjectCardProps) {
-  const isHealthy =
-    module.status === "ACTIVE" || module.status === "OPERATIONAL";
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    // Calculate mouse position relative to the card for the spotlight effect
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   return (
     <div
-      id={`module-node-${module.id.toLowerCase()}`}
-      className="group relative border-t border-zinc-900/70 py-12 md:py-16 transition-all duration-500 hover:bg-[#070708]/30 hover:border-zinc-800 px-4 md:px-6 rounded hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(6,182,212,0.06)]"
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      className="group relative p-8 mb-12 bg-zinc-950/20 border border-zinc-900 transition-all duration-500 hover:border-cyan-500/40 clip-tech-corners"
     >
-      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/60 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-l" />
-      {/* Subtle hover background accent lines */}
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-950/0 via-zinc-950/5 to-amber-950/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-px h-0 bg-gradient-to-b from-cyan-500 to-transparent group-hover:h-full transition-all duration-700 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-px h-0 bg-gradient-to-t from-amber-500 to-transparent group-hover:h-full transition-all duration-700 pointer-events-none" />
+      {/* DYNAMIC SPOTLIGHT: Uses mouse tracking for that holographic depth */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(6,182,212,0.06), transparent 40%)`,
+        }}
+      />
 
-      <div className="relative z-10 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-        {/* Core Metadata Segment */}
-        <div className="lg:w-1/3 flex flex-col space-y-4">
-          {/* Module Identifier Code */}
-          <div className="flex items-center space-x-2 text-[10px] tracking-[0.3em] font-mono text-zinc-500 select-none">
-            <span className="text-cyan-500 font-semibold">[{module.id}]</span>
-            <span className="text-zinc-700">//</span>
-            <span>{module.category}</span>
+      {/* SCANLINE SWEEP: Utilizing your existing @keyframes scanSweep */}
+      <div className="absolute left-0 w-full h-[2px] bg-cyan-500/10 opacity-0 group-hover:opacity-100 group-hover:animate-[scanSweep_2.5s_ease-in-out_infinite] z-20" />
+
+      <div className="relative z-10 flex flex-col lg:flex-row gap-10">
+        {/* MODULE IDENTIFIER */}
+        <div className="lg:w-1/3 space-y-6">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-zinc-900/50 rounded-sm border border-zinc-800 group-hover:border-amber-500/50 transition-colors">
+              <Cpu size={18} className="text-amber-500" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[9px] font-mono text-zinc-500 tracking-[0.3em] uppercase">
+                Module_ID
+              </span>
+              <span className="text-sm font-mono text-cyan-400 font-bold tracking-widest">
+                {module.id}
+              </span>
+            </div>
           </div>
 
-          {/* Module Title */}
-          <h3 className="text-xl md:text-2xl font-light tracking-tight text-zinc-100 font-display group-hover:text-amber-500 transition-colors duration-300">
+          <h3 className="text-3xl font-display font-light text-zinc-100 group-hover:text-cyan-400 transition-colors duration-300">
             {module.title}
           </h3>
 
-          {/* Module Health Check Status Lines */}
-          <div className="flex items-center space-x-4 text-[10px] tracking-widest font-mono text-zinc-500">
-            <div className="flex items-center space-x-2">
-              <span className="relative flex h-2 w-2">
-                <span
-                  className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isHealthy ? "bg-emerald-500" : "bg-rose-500"} opacity-75`}
-                ></span>
-                <span
-                  className={`relative inline-flex rounded-full h-2 w-2 ${isHealthy ? "bg-emerald-500" : "bg-rose-500"}`}
-                ></span>
-              </span>
-              <span
-                className={`uppercase font-semibold ${isHealthy ? "text-emerald-500" : "text-rose-500"}`}
-              >
-                {module.status}
-              </span>
-            </div>
-            <span className="text-zinc-800">|</span>
-            <div className="flex items-center space-x-1.5">
-              <Cpu size={10} className="text-cyan-500" />
-              <span>
-                REV:{" "}
-                <span className="text-cyan-400 font-semibold">
-                  {module.version}
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Detailed System Specifications */}
-        <div className="lg:w-2/3 flex flex-col space-y-6">
-          {/* Functional system summary */}
-          <p className="text-zinc-400 text-sm md:text-base font-light leading-relaxed max-w-[600px] font-sans">
-            {module.description}
-          </p>
-
-          {/* System breakdown schematics */}
-          <div className="space-y-4 pt-5 border-t border-zinc-900 w-full max-w-[600px]">
-            <div className="flex items-center space-x-2 text-[10px] tracking-widest font-mono text-zinc-500 uppercase select-none">
-              <Terminal size={11} className="text-amber-500" />
-              <span>TECHNICAL_EXECUTION_LOG // SH_STDOUT</span>
-            </div>
-
-            <div className="bg-[#040405] border border-zinc-900/80 p-4 rounded clip-tech-corners font-mono text-xs text-zinc-400 space-y-3.5 group-hover:border-zinc-800 transition-colors duration-300">
-              <ul className="space-y-3.5 leading-relaxed">
-                {module.technicalBreakdown.map((point, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <span className="text-amber-500/80 font-semibold shrink-0 select-none">
-                      $ [{index + 1}]
-                    </span>
-                    <span className="text-zinc-300 font-light group-hover:text-zinc-200 transition-colors duration-200">
-                      {point}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Micro telemetry performance metrics */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 max-w-[600px]">
-            {module.metrics.map((metric, index) => (
+          <div className="flex flex-wrap gap-2">
+            {module.metrics.slice(0, 2).map((metric, i) => (
               <div
-                key={index}
-                className="border-l-2 border-cyan-500/80 pl-4 py-2.5 flex flex-col space-y-1.5 bg-[#070708]/40 border-y border-r border-zinc-900/60 rounded-r clip-tech-sm transition-all duration-300 group-hover:border-zinc-800/80 hover:bg-[#070709]/80"
+                key={i}
+                className="px-3 py-1 bg-zinc-900/40 border border-zinc-800 clip-tech-sm"
               >
-                <div className="flex items-center space-x-1.5 text-[9px] tracking-widest font-mono text-zinc-500 uppercase select-none">
-                  <Activity size={10} className="text-zinc-600" />
-                  <span>{metric.label}</span>
-                </div>
-                <span className="text-zinc-200 font-mono text-sm font-semibold tracking-wider glow-text-cyan">
+                <span className="text-[8px] font-mono text-zinc-500 block uppercase">
+                  {metric.label}
+                </span>
+                <span className="text-[10px] font-mono text-zinc-300">
                   {metric.value}
                 </span>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* DATA READOUT */}
+        <div className="lg:w-2/3 space-y-6">
+          <p className="text-zinc-400 font-sans font-light leading-relaxed max-w-xl">
+            {module.description}
+          </p>
+
+          {/* TECH EXECUTION LOG: Using your existing monospace variables */}
+          <div className="bg-black/40 border border-zinc-900 p-5 clip-tech-sm group-hover:bg-black/60 transition-colors">
+            <div className="flex items-center space-x-2 text-[9px] font-mono text-zinc-600 mb-4 tracking-tighter">
+              <Terminal size={12} className="text-cyan-500" />
+              <span>SYSTEM_EXECUTION_STDOUT</span>
+            </div>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+              {module.technicalBreakdown.map((point, idx) => (
+                <li key={idx} className="flex items-start space-x-3 group/item">
+                  <span className="text-cyan-500/50 font-mono text-xs group-hover/item:text-cyan-400 transition-colors">
+                    0{idx + 1}
+                  </span>
+                  <span className="text-[11px] font-mono text-zinc-400 group-hover/item:text-zinc-200 transition-colors leading-tight">
+                    {point}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ACTION FOOTER */}
+          <div className="flex items-center justify-between pt-4 border-t border-zinc-900/50">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[9px] font-mono text-emerald-500/80 tracking-widest uppercase">
+                  Operational
+                </span>
+              </div>
+              <span className="text-zinc-800 font-mono text-xs">|</span>
+              <div className="flex items-center space-x-2">
+                <Activity size={12} className="text-zinc-600" />
+                <span className="text-[9px] font-mono text-zinc-600 uppercase">
+                  Load: 1.02ms
+                </span>
+              </div>
+            </div>
+
+            <button className="flex items-center space-x-2 group/btn text-cyan-400 hover:text-white transition-all">
+              <span className="text-[10px] font-mono tracking-widest uppercase">
+                Access_Sytem
+              </span>
+              <ArrowRight
+                size={14}
+                className="group-hover/btn:translate-x-1 transition-transform"
+              />
+            </button>
           </div>
         </div>
       </div>

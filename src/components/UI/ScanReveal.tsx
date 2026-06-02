@@ -1,12 +1,6 @@
 import React from "react";
 import { useScanReveal } from "../../hooks/useScanReveal";
-
-interface ScanRevealProps {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-  color?: "cyan" | "amber";
-}
+import type { ScanRevealProps } from "../../types";
 
 export default function ScanReveal({
   children,

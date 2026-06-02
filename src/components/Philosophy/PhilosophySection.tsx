@@ -3,6 +3,7 @@ import { PHILOSOPHY_NODES } from "../../data";
 import { Shield, Hammer, Compass, GitBranch } from "lucide-react";
 import { useLiveUTC } from "../../hooks/useLiveUTC";
 import { useTypewriter } from "../../hooks/useTypewriter";
+import { GlitchHeader } from "../UI/GlitchHeader";
 
 export default function PhilosophySection() {
   const liveUTC = useLiveUTC(500);
@@ -37,18 +38,13 @@ export default function PhilosophySection() {
       <div className="max-w-6xl w-full mx-auto grid grid-cols-1 gap-8 items-center">
         {/* Content Block (Left Column) */}
         <div className="flex flex-col space-y-6 text-left">
-          <div className="flex flex-col space-y-3">
-            <div className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-zinc-500 uppercase select-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-              <span>NODE_05 // ENGINEERING PRINCIPLES</span>
-            </div>
-            <h2 className="text-3xl font-light tracking-tight text-zinc-100 font-display">
-              Core Principles
-            </h2>
-            <p className="text-xs font-mono text-zinc-600 tracking-wider uppercase">
-              HOW I BUILD // WHAT I VALUE
-            </p>
-          </div>
+          {/* Integrated the high-visibility Glitch Header */}
+          <GlitchHeader
+            title="Core Principles"
+            subtitle="HOW I BUILD // WHAT I VALUE"
+            node="NODE_05 // ENGINEERING PRINCIPLES"
+            color="emerald"
+          />
 
           <div className="flex flex-col border border-zinc-900/80 rounded bg-[#070708]/30 overflow-hidden clip-tech-corners shadow-[0_0_30px_rgba(245,158,11,0.01)] hover:border-zinc-800 transition-colors duration-500 divide-y divide-zinc-900/80">
             {PHILOSOPHY_NODES.map((node, index) => (
