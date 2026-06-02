@@ -50,7 +50,7 @@ export default function PhilosophySection() {
             </p>
           </div>
 
-          <div className="flex flex-col border border-zinc-900/80 rounded bg-[#070708]/30 overflow-hidden clip-tech-corners shadow-[0_0_30px_rgba(245,158,11,0.01)] hover:border-zinc-800 transition-colors duration-500 divide-y divide-zinc-900/80 max-w-4xl">
+          <div className="flex flex-col border border-zinc-900/80 rounded bg-[#070708]/30 overflow-hidden clip-tech-corners shadow-[0_0_30px_rgba(245,158,11,0.01)] hover:border-zinc-800 transition-colors duration-500 divide-y divide-zinc-900/80">
             {PHILOSOPHY_NODES.map((node, index) => (
               <div
                 key={index}

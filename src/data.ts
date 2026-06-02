@@ -147,7 +147,7 @@ export const SYSTEM_MODULES: SystemModule[] = [
     ],
     metrics: [
       { label: "Deployment scope", value: "Internal enterprise" },
-      { label: "Knowledge sources", value: "Multi-domain" },
+      { label: "Knowledge sources", value: "Insurance" },
     ],
     status: "ACTIVE",
     version: "v1.0.0-internal",

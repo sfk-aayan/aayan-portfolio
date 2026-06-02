@@ -130,7 +130,7 @@ export default function App() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="text-zinc-600 hover:text-amber-500 transition-colors duration-200"
+                className="text-zinc-600 hover:text-cyan-400 transition-colors duration-200"
               >
                 <Linkedin size={14} />
               </a>
