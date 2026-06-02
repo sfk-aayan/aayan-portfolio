@@ -4,6 +4,7 @@ import {
   SyntheticEvent,
   useState,
   useEffect,
+  useRef,
 } from "react";
 
 interface CinematicVideoProps {
@@ -22,6 +23,33 @@ const CinematicVideo = forwardRef(
     const [isPreloadComplete, setIsPreloadComplete] = useState<boolean>(false);
     const [preloadError, setPreloadError] = useState<boolean>(false);
     const [isMetadataLoaded, setIsMetadataLoaded] = useState<boolean>(false);
+    const [isFading, setIsFading] = useState<boolean>(false);
+
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+
+    const setRefs = (node: HTMLVideoElement | null) => {
+      videoRef.current = node;
+      if (typeof ref === "function") {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    };
+
+    const handleEnded = () => {
+      setIsFading(true);
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+          videoRef.current
+            .play()
+            .catch((err) => console.warn("Video replay error:", err));
+        }
+        setTimeout(() => {
+          setIsFading(false);
+        }, 100);
+      }, 900);
+    };
 
     // Progressive fetch loading system for buttery-smooth scrubbing
     useEffect(() => {
@@ -120,7 +148,7 @@ const CinematicVideo = forwardRef(
     return (
       <div
         id="cinematic-stage"
-        className="relative w-full h-full overflow-hidden bg-[#0A0A0A]"
+        className="relative w-[85vw] h-[85vh] overflow-hidden bg-[#0A0A0A] rounded-sm"
       >
         {/* Cinematic gradient overlay layer to integrate video into the physical slate background */}
         <div className="absolute inset-0 z-10 pointer-events-none product-lighting" />
@@ -158,19 +186,24 @@ const CinematicVideo = forwardRef(
         {/* Core video player */}
         <video
           id="hero-cinematic-track"
-          ref={ref}
+          ref={setRefs}
           src={activeSrc}
           muted
           playsInline
+          autoPlay
           preload="auto"
           onLoadedMetadata={handleLoadedMetadata}
           onError={handleVideoError}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-            isMetadataLoaded ? "opacity-85" : "opacity-0"
+          onEnded={handleEnded}
+          className={`object-cover transition-opacity duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            !isMetadataLoaded || isFading ? "opacity-0" : "opacity-85"
           }`}
           style={{
-            // Keep the rendering crisp and hardware accelerated
             transform: "translate3d(0, 0, 0)",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center center",
           }}
         />
       </div>

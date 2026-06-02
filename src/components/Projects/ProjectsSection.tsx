@@ -25,8 +25,8 @@ export default function ProjectsSection() {
         id="section-bio"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
-        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          <div className="lg:col-span-7 flex flex-col space-y-6 text-left">
+        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 gap-8 items-center px-6">
+          <div className="flex flex-col space-y-6 text-left">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-amber-500/80 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
@@ -42,7 +42,7 @@ export default function ProjectsSection() {
 
             <p
               ref={bioRef as React.RefObject<HTMLParagraphElement>}
-              className="text-zinc-300 text-sm md:text-base font-light leading-relaxed font-mono bg-zinc-950/40 p-4 border border-zinc-900 rounded-md min-h-[80px]"
+              className="text-zinc-300 text-sm md:text-base font-light leading-relaxed font-mono bg-zinc-950/50 p-4 border border-zinc-800/60 border-l-2 border-l-cyan-500/40 hover:border-zinc-700/60 transition-colors duration-500 backdrop-blur-sm rounded-md min-h-[80px]"
             >
               {typedBio}
               {/* Blinking cursor — disappears when typing is done */}
@@ -63,7 +63,7 @@ export default function ProjectsSection() {
                       {items.map((skill) => (
                         <span
                           key={skill}
-                          className="text-[10px] font-mono text-zinc-400 bg-zinc-950/80 px-2.5 py-1.5 rounded border border-zinc-900 hover:border-cyan-500/30 hover:text-cyan-400 transition-colors duration-250 cursor-default"
+                          className="text-[10px] font-mono text-zinc-400 bg-zinc-950/80 px-2.5 py-1.5 rounded border border-zinc-900 hover:border-cyan-500/30 hover:text-cyan-400 transition-all duration-250 hover:scale-105 hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(6,182,212,0.15)] cursor-default"
                         >
                           {skill}
                         </span>
@@ -74,9 +74,6 @@ export default function ProjectsSection() {
               )}
             </div>
           </div>
-
-          {/* Docking Space Slot */}
-          <div className="hidden lg:block lg:col-span-5" />
         </div>
       </section>
 
@@ -87,11 +84,8 @@ export default function ProjectsSection() {
         id="section-experience"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
-        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          {/* Docking Space Slot */}
-          <div className="hidden lg:block lg:col-span-5" />
-
-          <div className="lg:col-span-7 flex flex-col space-y-6 text-left lg:pl-6">
+        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 gap-8 items-center px-6">
+          <div className="flex flex-col space-y-6 text-left">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-cyan-400 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
@@ -111,14 +105,14 @@ export default function ProjectsSection() {
               {WORK_EXPERIENCE.map((exp) => (
                 <div
                   key={exp.id}
-                  className="group relative flex flex-col space-y-2.5"
+                  className="group relative flex flex-col space-y-2.5 hover:translate-x-1.5 transition-transform duration-300"
                 >
                   <div className="absolute -left-[27px] md:-left-[35px] top-1.5 w-3 h-3 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center group-hover:border-cyan-500 transition-colors duration-300">
-                    <span className="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-cyan-500 transition-colors duration-300" />
+                    <span className="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-cyan-500 group-hover:scale-150 transition-transform duration-300" />
                   </div>
 
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-1.5">
-                    <h3 className="text-lg font-normal text-zinc-100 font-display group-hover:text-cyan-400 transition-colors duration-300">
+                    <h3 className="text-lg font-normal text-zinc-100 font-display group-hover:text-cyan-400 group-hover:tracking-wider transition-all duration-300">
                       {exp.company}
                     </h3>
                     <span className="text-[10px] font-mono text-amber-500/80 font-semibold tracking-wider bg-amber-500/5 px-2 py-0.5 border border-amber-500/10 rounded">
@@ -165,8 +159,8 @@ export default function ProjectsSection() {
         id="section-projects"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
-        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          <div className="lg:col-span-7 flex flex-col space-y-6 text-left">
+        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 gap-8 items-center px-6">
+          <div className="flex flex-col space-y-6 text-left">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-zinc-500 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
@@ -183,14 +177,14 @@ export default function ProjectsSection() {
             <div className="flex flex-col mt-4">
               {SYSTEM_MODULES.map((module, i) => (
                 <ScanReveal key={module.id} delay={i * 80} color="amber">
-                  <ProjectCard module={module} />
+                  <div className="group relative overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(6,182,212,0.07)] rounded">
+                    <div className="absolute left-0 top-[10%] bottom-[10%] w-[2px] rounded-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
+                    <ProjectCard module={module} />
+                  </div>
                 </ScanReveal>
               ))}
             </div>
           </div>
-
-          {/* Docking Space Slot */}
-          <div className="hidden lg:block lg:col-span-5" />
         </div>
       </section>
 
@@ -201,11 +195,8 @@ export default function ProjectsSection() {
         id="section-research"
         className="w-full min-h-screen lg:min-h-screen flex items-center justify-start border-t border-zinc-900/60 py-16 relative"
       >
-        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center px-6">
-          {/* Docking Space Slot */}
-          <div className="hidden lg:block lg:col-span-5" />
-
-          <div className="lg:col-span-7 flex flex-col space-y-6 text-left lg:pl-6">
+        <div className="max-w-6xl w-full mx-auto grid grid-cols-1 gap-8 items-center px-6">
+          <div className="flex flex-col space-y-6 text-left">
             <div className="flex flex-col space-y-3">
               <span className="flex items-center space-x-2 text-[10px] tracking-[0.5em] font-mono text-cyan-400 uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
@@ -224,7 +215,8 @@ export default function ProjectsSection() {
             <div className="space-y-6 mt-4">
               {PUBLICATIONS.map((pub, i) => (
                 <ScanReveal key={pub.id} delay={i * 80} color="amber">
-                  <div className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60">
+                  <div className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(245,158,11,0.06)] transition-all duration-500 hover:bg-[#07070a]/60 overflow-hidden">
+                    <div className="absolute left-0 top-[10%] bottom-[10%] w-[2px] rounded-full bg-gradient-to-b from-transparent via-amber-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
                     <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
 
@@ -278,8 +270,9 @@ export default function ProjectsSection() {
                 <ScanReveal>
                   <div
                     key={cert.id}
-                    className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 transition-all duration-300 hover:bg-[#07070a]/60"
+                    className="group relative bg-[#070708]/30 border border-zinc-900/80 p-5 rounded-md clip-tech-corners hover:border-zinc-800 hover:-translate-y-1.5 hover:shadow-[0_8px_30px_rgba(245,158,11,0.06)] transition-all duration-500 hover:bg-[#07070a]/60 overflow-hidden"
                   >
+                    <div className="absolute left-0 top-[10%] bottom-[10%] w-[2px] rounded-full bg-gradient-to-b from-transparent via-amber-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800 group-hover:border-amber-500/60 transition-colors duration-300" />
                     <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-800 group-hover:border-cyan-500/60 transition-colors duration-300" />
 

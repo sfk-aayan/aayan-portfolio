@@ -12,8 +12,9 @@ export default function ProjectCard({ module }: ProjectCardProps) {
   return (
     <div
       id={`module-node-${module.id.toLowerCase()}`}
-      className="group relative border-t border-zinc-900/70 py-12 md:py-16 transition-all duration-500 hover:bg-[#070708]/30 hover:border-zinc-800 px-4 md:px-6 rounded"
+      className="group relative border-t border-zinc-900/70 py-12 md:py-16 transition-all duration-500 hover:bg-[#070708]/30 hover:border-zinc-800 px-4 md:px-6 rounded hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(6,182,212,0.06)]"
     >
+      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/60 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-l" />
       {/* Subtle hover background accent lines */}
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-950/0 via-zinc-950/5 to-amber-950/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       <div className="absolute top-0 right-0 w-px h-0 bg-gradient-to-b from-cyan-500 to-transparent group-hover:h-full transition-all duration-700 pointer-events-none" />

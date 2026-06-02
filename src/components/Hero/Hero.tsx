@@ -74,32 +74,39 @@ export default function Hero() {
         </div>
 
         {/* System Status Widget */}
-        <div className="flex items-center gap-4 text-[9px] tracking-widest font-mono text-zinc-500 border border-zinc-900 bg-zinc-950/70 p-3 rounded clip-tech-sm self-start mt-1">
-          <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-4 text-[9px] tracking-widest font-mono text-zinc-500 border border-zinc-800/50 bg-zinc-950/60 backdrop-blur-sm hover:border-amber-500/20 transition-colors duration-500 p-3 rounded clip-tech-sm self-start mt-1">
+          <div className="flex items-center gap-1.5 hover:text-zinc-300 transition-colors duration-200 cursor-default">
             <Cpu size={9} className="text-amber-500" />
             <span>CORE: ACTIVE</span>
           </div>
           <span className="text-zinc-800">|</span>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 hover:text-zinc-300 transition-colors duration-200 cursor-default">
             <Shield size={9} className="text-emerald-500" />
             <span>SYS: SECURE</span>
           </div>
           <span className="text-zinc-800">|</span>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 hover:text-zinc-300 transition-colors duration-200 cursor-default">
             <span className="w-1 h-1 rounded-full bg-cyan-500 animate-pulse" />
             <span>UPTIME: 99.98%</span>
           </div>
         </div>
       </div>
 
-      {/* ── Center Spacer (video floats here on desktop as a fixed overlay) ── */}
-      {/* min-h is generous so the video has a clear zone below the title block */}
-      <div className="flex-1 min-h-[45vh] lg:min-h-[52vh]" />
-
       {/* ── Bottom: Terminal Boot Log + Scroll Prompt ── */}
       <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row items-end justify-between gap-6 pb-10 relative z-30">
         {/* Terminal Boot Log */}
-        <div className="w-full lg:w-auto bg-[#030304]/90 border border-zinc-900 p-4 rounded-md font-mono text-[9px] text-zinc-500 max-w-sm">
+        <div className="w-full lg:w-auto bg-[#030304]/90 border border-zinc-900 p-4 rounded-md font-mono text-[9px] text-zinc-500 max-w-sm relative overflow-hidden">
+          <style>{`
+            @keyframes scan-sweep {
+              0% { top: -40%; }
+              100% { top: 100%; }
+            }
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+          <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-transparent via-cyan-500/[0.03] to-transparent h-[40%] animate-[scan-sweep_3s_ease-in-out_infinite]" />
           <div className="flex items-center space-x-2 text-zinc-400 tracking-wider mb-2.5 uppercase font-semibold border-b border-zinc-900 pb-2">
             <Terminal size={10} className="text-amber-500" />
             <span>WORKSPACE // INIT_LOG</span>
@@ -108,11 +115,11 @@ export default function Hero() {
             {bootLines.map((line, i) => (
               <div
                 key={i}
-                className={
+                className={`opacity-0 animate-[fadeIn_200ms_ease-out_forwards] ${
                   i === bootLines.length - 1
                     ? "text-amber-500/80 font-semibold terminal-cursor"
                     : "text-zinc-600"
-                }
+                }`}
               >
                 {line}
               </div>

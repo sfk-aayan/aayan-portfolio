@@ -1,18 +1,12 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Github, Linkedin } from "lucide-react";
 import Navbar from "./components/UI/Navbar";
 import Hero from "./components/Hero/Hero";
 import ProjectsSection from "./components/Projects/ProjectsSection";
 import PhilosophySection from "./components/Philosophy/PhilosophySection";
 import CinematicVideo from "./components/Hero/CinematicVideo";
-import ScrollVideoController from "./components/Hero/ScrollVideoController";
 import BootSequence from "./components/UI/BootSequence";
 import CustomCursor from "./components/UI/CustomCursor";
-import { useScrambleText } from "./hooks/useScrambleText";
-import { useIsDesktop } from "./hooks/useIsDesktop";
-import { useActiveSection } from "./hooks/useActiveSection";
-import { useVideoHUD } from "./hooks/useVideoHUD";
-import { getDockingStyle } from "./lib/getDockingStyle";
 import { SOCIAL_LINKS } from "./data";
 
 const DEFAULT_VIDEO_URL = "/videos/hero.mp4";
@@ -20,26 +14,28 @@ const DEFAULT_VIDEO_URL = "/videos/hero.mp4";
 export default function App() {
   const [bootDone, setBootDone] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
-  const [pipExpanded, setPipExpanded] = useState(false);
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(
     null,
   );
 
   const gridRef = useRef<HTMLDivElement | null>(null);
-  const videoContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const isDesktop = useIsDesktop();
-  const activeSection = useActiveSection();
-  const { currentTimeText, progressPercent } = useVideoHUD(videoElement);
-  const hudLabel = useScrambleText(`[${activeSection.toUpperCase()}_NODE]`);
-  const dockingStyle = getDockingStyle(activeSection, isDesktop, pipExpanded);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (gridRef.current) {
+        gridRef.current.style.transform = `translate3d(0, ${window.scrollY * 0.04}px, 0)`;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const handleBootComplete = () => {
     setBootDone(true);
     setTimeout(() => setContentVisible(true), 50);
   };
-
-  const showHUD = isDesktop || pipExpanded;
 
   return (
     <>
@@ -55,59 +51,8 @@ export default function App() {
       >
         <Navbar />
 
-        <div
-          ref={gridRef}
-          className="fixed inset-0 cyber-grid cyber-grid-cyan z-0 pointer-events-none opacity-25"
-        />
-
-        {/* Floating video panel */}
-        <div
-          ref={videoContainerRef}
-          className="aspect-video border border-zinc-800/70 bg-zinc-950/50 backdrop-blur-sm shadow-[0_0_60px_rgba(245,158,11,0.04)] rounded overflow-hidden scanlines select-none"
-          style={dockingStyle}
-          aria-hidden={!isDesktop && !pipExpanded}
-          onClick={() => {
-            if (!isDesktop) setPipExpanded((p) => !p);
-          }}
-        >
-          {/* Collapsed tap hint — mobile only */}
-          {!isDesktop && !pipExpanded && (
-            <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
-              <span
-                className="text-[7px] tracking-widest font-mono text-amber-500/80 animate-pulse"
-                style={{ animationDuration: "2s" }}
-              >
-                ▶ FEED
-              </span>
-            </div>
-          )}
-
-          {/* HUD overlays */}
-          {showHUD && (
-            <>
-              <div className="absolute top-2 left-3 z-20 flex items-center space-x-1.5 text-[8px] tracking-widest font-mono text-zinc-500 select-none pointer-events-none">
-                <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />
-                <span>SYS_STREAM // LIVE</span>
-              </div>
-              <div className="absolute top-2 right-3 z-20 text-[8px] tracking-widest font-mono text-cyan-400/80 select-none pointer-events-none font-medium">
-                {hudLabel}
-              </div>
-              <div className="absolute bottom-2 left-3 z-20 text-[8px] tracking-widest font-mono text-zinc-600 select-none pointer-events-none">
-                T: {currentTimeText}
-              </div>
-              <div className="absolute bottom-2 right-3 z-20 text-[8px] tracking-widest font-mono text-zinc-600 select-none pointer-events-none">
-                {progressPercent}
-              </div>
-            </>
-          )}
-
-          {/* Corner brackets */}
-          <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-amber-500/50 z-20 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-amber-500/50 z-20 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-amber-500/50 z-20 pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-amber-500/50 z-20 pointer-events-none" />
-          <div className="scanline-bar" />
-
+        {/* Layer 1 — Fullscreen video (z-0) */}
+        <div className="fixed inset-0 z-0 flex items-center justify-center">
           <CinematicVideo
             ref={setVideoElement}
             videoUrl={DEFAULT_VIDEO_URL}
@@ -116,13 +61,55 @@ export default function App() {
           />
         </div>
 
-        <main className="relative z-10">
+        {/* Layer 2 — Dark base overlay (z-1) */}
+        <div className="fixed inset-0 bg-black/55 pointer-events-none z-[1]" />
+
+        {/* Layer 3 — Vignette overlay (z-2) */}
+        <div
+          className="fixed inset-0 pointer-events-none z-[2]"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.75) 100%)",
+          }}
+        />
+
+        {/* Layer 4 — Cyber grid (z-3) */}
+        <div
+          ref={gridRef}
+          className="fixed inset-0 cyber-grid cyber-grid-cyan opacity-25 pointer-events-none z-[3]"
+        />
+
+        {/* Layer 5 — Fullscreen HUD overlays (z-10) */}
+        <div className="fixed inset-0 pointer-events-none z-10 select-none">
+          {/* Top-left corner */}
+          <div className="absolute top-4 left-5 flex items-center space-x-1.5 text-[9px] tracking-widest font-mono text-zinc-500">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+            <span>SYS_STREAM // LIVE</span>
+          </div>
+
+          {/* Top-right corner */}
+          <div className="absolute top-4 right-5 text-[9px] tracking-widest font-mono text-cyan-400/70">
+            [AMBIENT_FEED]
+          </div>
+
+          {/* Corner brackets */}
+          <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-amber-500/40" />
+          <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-amber-500/40" />
+          <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-amber-500/40" />
+          <div className="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-amber-500/40" />
+
+          {/* scanline-bar */}
+          <div className="scanline-bar" />
+        </div>
+
+        {/* Layer 6 — Navbar and main content (z-20 and above) */}
+        <main className="relative z-20">
           <Hero />
           <ProjectsSection />
           <PhilosophySection />
         </main>
 
-        <footer className="relative z-10 w-full px-6 py-10 md:px-12 bg-[#050506] border-t border-zinc-950">
+        <footer className="relative z-20 w-full px-6 py-10 md:px-12 bg-[#050506] border-t border-zinc-950">
           <div className="max-w-6xl w-full mx-auto flex flex-col md:flex-row items-center justify-between text-[10px] tracking-widest font-mono text-zinc-700 gap-4">
             <span>PORTFOLIO_SYSTEM_STATUS: SECURE_STATIC</span>
 
@@ -150,12 +137,6 @@ export default function App() {
             </div>
           </div>
         </footer>
-
-        <ScrollVideoController
-          videoElement={videoElement}
-          gridElement={gridRef.current}
-          damping={0.07}
-        />
       </div>
     </>
   );
