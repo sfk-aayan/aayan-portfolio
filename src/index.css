@@ -16,6 +16,12 @@
     overflow-y: scroll;
   }
 
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+
   /* Custom minimal monospaced scrollbar */
   ::-webkit-scrollbar {
     width: 6px;

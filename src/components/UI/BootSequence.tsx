@@ -83,6 +83,7 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
         opacity,
         transition: "opacity 600ms ease",
         pointerEvents: opacity < 0.5 ? "none" : "all",
+        cursor: "none",
       }}
     >
       {/* Subtle scanline overlay */}
