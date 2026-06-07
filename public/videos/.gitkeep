@@ -1,0 +1,3 @@
+# This directory is reserved for hosting local cinematic video backgrounds.
+# Place your MP4 video file here named `hero.mp4` (i.e. `/public/videos/hero.mp4`).
+# If this file is present, the app will load it automatically. If it's missing, the app falls back to the remote URL.
