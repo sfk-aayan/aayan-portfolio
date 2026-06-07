@@ -220,6 +220,8 @@ export default function ProjectsSection() {
                       <div className="flex items-center shrink-0">
                         <a
                           href={pub.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="text-[10px] font-mono text-zinc-400 border border-zinc-900 hover:border-cyan-500/30 hover:text-cyan-400 bg-zinc-950 px-4 py-2 transition-all duration-300 flex items-center gap-1.5 rounded-sm"
                         >
                           READ_SPEC <ArrowUpRight size={11} />
@@ -244,7 +246,7 @@ export default function ProjectsSection() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {CERTIFICATIONS.map((cert, i) => (
                   <ScanReveal key={cert.id} delay={i * 100} color="cyan">
-                    <div className="group relative bg-[#070708]/20 border border-zinc-900/80 p-5 rounded-md hover:border-zinc-800/80 hover:bg-[#07070c]/40 transition-all duration-500 h-full flex flex-col justify-between">
+                    <div className="group relative bg-[#070708]/20 border border-zinc-900/80 p-5 rounded-md hover:border-zinc-800/80 hover:bg-[#07070c]/40 transition-all duration-500 h-30 flex flex-col justify-between">
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-[9px] font-mono">
                           <span className="text-amber-500 font-medium tracking-wide">
@@ -260,6 +262,8 @@ export default function ProjectsSection() {
                       <div className="flex justify-end pt-4 mt-auto border-t border-zinc-900/40">
                         <a
                           href={cert.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="text-[9px] font-mono text-zinc-500 hover:text-amber-400 flex items-center gap-1 transition-colors duration-200"
                         >
                           VIEW_CERT <ArrowUpRight size={10} />

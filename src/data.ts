@@ -14,7 +14,7 @@ export const SOCIAL_LINKS = {
 };
 
 export const BACKEND_PROFILE: DeveloperProfile = {
-  name: "SFK // FAIYAZ KARIM",
+  name: "SHAIKH // FAIYAZ KARIM",
   title: "Software Engineer",
   bio: "Backend-focused software engineer and gamer with production experience in Django and FastAPI, plus hands-on work across Go, Laravel, and .NET. Passionate about clean API design, AI tooling, and building reliable distributed services.",
   skills: {
@@ -133,6 +133,7 @@ export const SYSTEM_MODULES: SystemModule[] = [
     ],
     status: "OPERATIONAL",
     version: "v2.1.0-prod",
+    link: "https://nrb.myguardianbd.com",
   },
   {
     id: "SYS-02",
@@ -151,6 +152,7 @@ export const SYSTEM_MODULES: SystemModule[] = [
     ],
     status: "ACTIVE",
     version: "v1.0.0-internal",
+    link: null,
   },
   {
     id: "SYS-03",
@@ -169,6 +171,7 @@ export const SYSTEM_MODULES: SystemModule[] = [
     ],
     status: "ACTIVE",
     version: "v1.0.0-beta",
+    link: "https://github.com/sfk-aayan/Deen-dar",
   },
 ];
 
@@ -215,7 +218,7 @@ export const PUBLICATIONS: Publication[] = [
       "Anomaly Detection",
       "Qiskit",
     ],
-    link: "#",
+    link: "https://ieeexplore.ieee.org/abstract/document/11331191",
   },
 ];
 
@@ -228,7 +231,7 @@ export const CERTIFICATIONS: Certification[] = [
     summary:
       "Certification in advanced AI-assisted software engineering workflows using Claude, covering code generation, debugging, and agentic development pipelines.",
     tags: ["AI Tooling", "LLM", "Agentic Engineering"],
-    link: "#",
+    link: "https://verify.skilljar.com/c/nma75h3iedo3",
   },
   {
     id: "CERT-02",
@@ -238,7 +241,7 @@ export const CERTIFICATIONS: Certification[] = [
     summary:
       "Comprehensive full-stack web development certification covering modern JavaScript, React, Node.js, and database integration patterns.",
     tags: ["React", "JavaScript", "Full-Stack"],
-    link: "#",
+    link: "https://www.udemy.com/certificate/UC-15430ce4-cd0d-4632-8839-3b95c21520be/",
   },
   {
     id: "CERT-03",
@@ -248,6 +251,6 @@ export const CERTIFICATIONS: Certification[] = [
     summary:
       "Intensive quantum computing programme covering quantum circuit design, quantum algorithms, and practical implementations using the Qiskit framework.",
     tags: ["Quantum Computing", "Qiskit", "IBM", "Algorithms"],
-    link: "#",
+    link: "https://www.credly.com/badges/c97c57b9-7d8b-4626-b130-ca2058884f6c/linked_in_profile",
   },
 ];

@@ -115,15 +115,25 @@ export default function ProjectCard({ module }: { module: SystemModule }) {
               </div>
             </div>
 
-            <button className="flex items-center space-x-2 group/btn text-cyan-400 hover:text-white transition-all">
-              <span className="text-[10px] font-mono tracking-widest uppercase">
-                Access_Sytem
-              </span>
-              <ArrowRight
-                size={14}
-                className="group-hover/btn:translate-x-1 transition-transform"
-              />
-            </button>
+            {module.link ? (
+              <a target="_blank" rel="noopener noreferrer" href={module.link}>
+                <button className="flex items-center space-x-2 group/btn text-cyan-400 hover:text-white transition-all">
+                  <span className="text-[10px] font-mono tracking-widest uppercase">
+                    Access_System
+                  </span>
+                  <ArrowRight
+                    size={14}
+                    className="group-hover/btn:translate-x-1 transition-transform"
+                  />
+                </button>
+              </a>
+            ) : (
+              <div className="flex items-center space-x-2 text-gray-500">
+                <span className="text-[10px] font-mono tracking-widest uppercase">
+                  Restricted
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

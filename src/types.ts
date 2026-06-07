@@ -10,6 +10,7 @@ export interface SystemModule {
   }[];
   status: "ACTIVE" | "DEGRADED" | "OPERATIONAL" | "OFFLINE";
   version: string;
+  link?: string;
 }
 
 export interface PhilosophyNode {
