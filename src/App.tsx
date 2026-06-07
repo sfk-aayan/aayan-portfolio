@@ -9,7 +9,7 @@ import BootSequence from "./components/UI/BootSequence";
 import CustomCursor from "./components/UI/CustomCursor";
 import { SOCIAL_LINKS } from "./data";
 
-const DEFAULT_VIDEO_URL = "/videos/hero.mp4";
+const DEFAULT_VIDEO_URL = import.meta.env.BASE_URL + "videos/hero.mp4";
 
 export default function App() {
   const [bootDone, setBootDone] = useState(false);
