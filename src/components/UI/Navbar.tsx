@@ -1,107 +1,158 @@
-import { useState, useEffect } from "react";
-import { Shield, Cpu, Github, Linkedin } from "lucide-react";
+import { motion } from "motion/react";
+import { Github, Linkedin } from "lucide-react";
 import { SOCIAL_LINKS } from "../../data";
+import { useActiveSection, SectionKey } from "../../hooks/useActiveSection";
+import { useLiveUTC } from "../../hooks/useLiveUTC";
+import { requestSheetTransfer } from "./SheetTransfer";
+import { motionConfig } from "../../lib/motionConfig";
+
+const PLATES: { id: string; section: SectionKey; n: string; label: string }[] =
+  [
+    { id: "section-bio", section: "bio", n: "02", label: "OPERATOR" },
+    { id: "section-experience", section: "experience", n: "03", label: "HISTORY" },
+    { id: "section-projects", section: "projects", n: "04", label: "SYSTEMS" },
+    { id: "section-research", section: "research", n: "05", label: "REFERENCES" },
+    { id: "section-philosophy", section: "philosophy", n: "06", label: "NOTES" },
+  ];
+
+const SHEET_OF: Record<SectionKey, string> = {
+  hero: "01",
+  bio: "02",
+  experience: "03",
+  projects: "04",
+  research: "05",
+  philosophy: "06",
+};
 
 export default function Navbar() {
-  const [isVisible, setIsVisible] = useState(true);
-  const [systemTime, setSystemTime] = useState("");
+  const active = useActiveSection();
+  const utc = useLiveUTC(1000);
 
-  useEffect(() => {
-    function handleScroll() {
-      if (window.scrollY > 60) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-    }
-
-    const timer = setInterval(() => {
-      const d = new Date();
-      const timeStr = d.toISOString().replace("T", " ").substring(0, 19) + "Z";
-      setSystemTime(timeStr);
-    }, 1000);
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearInterval(timer);
-    };
-  }, []);
+  const transfer = (
+    e: React.MouseEvent,
+    targetId: string,
+    sheetNo: string,
+    label: string,
+  ) => {
+    e.preventDefault();
+    requestSheetTransfer({ targetId, sheetNo, label });
+  };
 
   return (
-    <nav
-      id="sys-nav"
-      className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 md:px-12 pointer-events-none select-none transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto flex items-center justify-between pointer-events-auto bg-[#070708]/75 backdrop-blur-md border border-zinc-800/60 px-5 py-3 rounded clip-tech-sm glow-cyan">
-        {/* Logo / System Label */}
-        <div className="flex items-center space-x-3 text-[10px] tracking-[0.25em] font-mono text-zinc-500">
-          <div className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
-          </div>
-          <span className="text-zinc-200 font-semibold tracking-widest font-display">
-            FOUNDER_OPERATOR
-          </span>
-          <span className="hidden sm:inline-block text-zinc-700 border-l border-zinc-800 pl-3 font-mono">
-            SYS_BUILD_v4.2
-          </span>
-        </div>
+    <>
+      {/* ── Drafting-tape nav chip ── */}
+      <nav
+        id="sys-nav"
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 rotate-[-0.4deg] select-none"
+      >
+        <div className="flex items-center gap-4 md:gap-6 bg-paper/95 backdrop-blur-sm border border-rule shadow-[0_2px_14px_rgba(9,30,53,0.25)] px-4 md:px-6 py-2.5">
+          <a
+            href="#section-hero"
+            onClick={(e) => transfer(e, "section-hero", "01", "TITLE")}
+            className="flex items-center gap-2 font-mono text-[10px] tracking-[0.25em] text-ink whitespace-nowrap"
+          >
+            <span className="w-1.5 h-1.5 bg-safety" />
+            <span className="font-semibold">S. FAIYAZ KARIM</span>
+          </a>
 
-        {/* Right side — indicators + social links */}
-        <div className="flex items-center space-x-4 md:space-x-6 text-[9px] tracking-[0.25em] font-mono text-zinc-400">
-          {/* System indicators */}
-          <div className="hidden md:flex items-center space-x-1.5">
-            <Cpu size={10} className="text-amber-500" />
-            <span>
-              LATENCY:{" "}
-              <span className="text-amber-500 font-semibold">140μs</span>
-            </span>
-          </div>
+          <span className="hidden md:block w-px h-3.5 bg-rule" />
 
-          <div className="flex items-center space-x-1.5">
-            <Shield size={10} className="text-emerald-500" />
-            <span>
-              STABILITY:{" "}
-              <span className="text-emerald-500 font-semibold">99.98%</span>
-            </span>
-          </div>
-
-          <div className="hidden lg:block text-zinc-500">
-            SYNC_TIME:{" "}
-            <span className="text-zinc-400">
-              {systemTime || "2026-05-24 20:03:52Z"}
-            </span>
+          <div className="hidden md:flex items-center gap-5">
+            {PLATES.map((p) => (
+              <a
+                key={p.id}
+                href={`#${p.id}`}
+                onClick={(e) => transfer(e, p.id, p.n, p.label)}
+                className={`relative font-mono text-[9px] tracking-[0.2em] transition-colors duration-200 whitespace-nowrap ${
+                  active === p.section
+                    ? "text-safety"
+                    : "text-ink-soft hover:text-ink"
+                }`}
+              >
+                <span className="opacity-60 mr-1">{p.n}</span>
+                {p.label}
+                {/* Active tick slides between plates like a drafting stop */}
+                {active === p.section && (
+                  <motion.span
+                    layoutId="plate-tick"
+                    className="absolute -bottom-[7px] left-0 right-0 h-[2px] bg-safety"
+                    transition={{ duration: 0.35, ease: motionConfig.ease }}
+                  />
+                )}
+              </a>
+            ))}
           </div>
 
-          {/* Divider */}
-          <span className="hidden sm:block border-l border-zinc-800 h-3" />
+          <span className="w-px h-3.5 bg-rule" />
 
-          {/* Social links */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
             <a
               href={SOCIAL_LINKS.GITHUB}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="text-zinc-500 hover:text-amber-500 transition-colors duration-200"
+              className="text-ink-soft hover:text-safety transition-colors duration-200"
             >
-              <Github size={13} />
+              <Github size={12} />
             </a>
             <a
               href={SOCIAL_LINKS.LINKEDIN}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="text-zinc-500 hover:text-cyan-400 transition-colors duration-200"
+              className="text-ink-soft hover:text-draft transition-colors duration-200"
             >
-              <Linkedin size={13} />
+              <Linkedin size={12} />
             </a>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* ── Title block — bottom-right, like a real drawing sheet ── */}
+      <aside className="fixed bottom-6 right-6 z-40 hidden lg:block pointer-events-none select-none">
+        <div className="bg-paper/95 border border-ink/40 font-mono text-[9px] tracking-[0.12em] text-ink w-[230px] shadow-[0_2px_14px_rgba(9,30,53,0.2)]">
+          <div className="grid grid-cols-[80px_1fr] border-b border-ink/25">
+            <span className="px-2.5 py-1.5 text-ink-faint uppercase border-r border-ink/25">
+              Drawn by
+            </span>
+            <span className="px-2.5 py-1.5">S. FAIYAZ KARIM</span>
+          </div>
+          <div className="grid grid-cols-[80px_1fr] border-b border-ink/25">
+            <span className="px-2.5 py-1.5 text-ink-faint uppercase border-r border-ink/25">
+              Sheet
+            </span>
+            <span className="px-2.5 py-1.5 tabular-nums">
+              {/* New digit rolls in whenever the active sheet changes */}
+              <motion.span
+                key={SHEET_OF[active]}
+                initial={{ y: 7, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, ease: motionConfig.ease }}
+                className="text-safety inline-block"
+              >
+                {SHEET_OF[active]}
+              </motion.span>
+              <span className="text-ink-faint"> · 06</span>
+            </span>
+          </div>
+          <div className="grid grid-cols-[80px_1fr] border-b border-ink/25">
+            <span className="px-2.5 py-1.5 text-ink-faint uppercase border-r border-ink/25">
+              Scale
+            </span>
+            <span className="px-2.5 py-1.5">
+              1:1 <span className="text-ink-faint">— REV C</span>
+            </span>
+          </div>
+          <div className="grid grid-cols-[80px_1fr]">
+            <span className="px-2.5 py-1.5 text-ink-faint uppercase border-r border-ink/25">
+              Issued
+            </span>
+            <span className="px-2.5 py-1.5 tabular-nums">
+              {utc.replace("T", " ").substring(0, 19)}Z
+            </span>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }

@@ -2,6 +2,10 @@ import React from "react";
 import { useScanReveal } from "../../hooks/useScanReveal";
 import type { ScanRevealProps } from "../../types";
 
+/**
+ * Plot reveal — a pen hairline sweeps left to right and the content
+ * inks in behind it, the way a plotter lays down a figure.
+ */
 export default function ScanReveal({
   children,
   className = "",
@@ -10,42 +14,33 @@ export default function ScanReveal({
 }: ScanRevealProps) {
   const { ref, hasRevealed } = useScanReveal({ threshold: 0.15, delay });
 
-  const scanColor =
-    color === "amber"
-      ? "from-transparent via-amber-500/60 to-transparent"
-      : "from-transparent via-cyan-500/60 to-transparent";
+  // Pen colors: "amber" → safety orange, "cyan" → drafting blue
+  const penColor = color === "amber" ? "bg-safety" : "bg-draft";
 
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`relative overflow-hidden ${className}`}
+      className={`relative ${className}`}
     >
-      {/* Content — fades in as scan passes */}
+      {/* Content inks in from the left edge */}
       <div
-        className="transition-opacity duration-300"
-        style={{ opacity: hasRevealed ? 1 : 0 }}
+        style={{
+          clipPath: hasRevealed ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
+          transition: "clip-path 950ms cubic-bezier(0.65, 0, 0.35, 1)",
+        }}
       >
         {children}
       </div>
 
-      {/* Scan line — sweeps top to bottom then disappears */}
+      {/* The pen — a vertical hairline crossing the figure once */}
       {hasRevealed && (
         <div
-          className={`absolute inset-x-0 h-[2px] bg-gradient-to-r ${scanColor} pointer-events-none z-30`}
+          className={`absolute top-0 bottom-0 w-px ${penColor} pointer-events-none z-20`}
           style={{
-            animation: "scanSweep 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
+            animation: "plot-sweep 950ms cubic-bezier(0.65, 0, 0.35, 1) forwards",
           }}
         />
       )}
-
-      {/* Pre-reveal dim overlay — peels away with scan */}
-      <div
-        className="absolute inset-0 bg-zinc-950/80 pointer-events-none z-20 transition-opacity duration-100"
-        style={{
-          opacity: hasRevealed ? 0 : 1,
-          transitionDelay: hasRevealed ? "500ms" : "0ms",
-        }}
-      />
     </div>
   );
 }

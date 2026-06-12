@@ -1,278 +1,342 @@
+import { motion } from "motion/react";
 import {
   BACKEND_PROFILE,
+  EDUCATION,
   WORK_EXPERIENCE,
   SYSTEM_MODULES,
   PUBLICATIONS,
   CERTIFICATIONS,
 } from "../../data";
 import ProjectCard from "./ProjectCard";
-import { Layers, ArrowUpRight, Clock } from "lucide-react";
-import { useTypewriter } from "../../hooks/useTypewriter";
 import ScanReveal from "../UI/ScanReveal";
 import { GlitchHeader } from "../UI/GlitchHeader";
 
+/** Horizontal dimension line with 45° architectural end ticks. */
+function DimLine({ label }: { label: string }) {
+  return (
+    <div className="relative h-px bg-ink/50 my-3">
+      <span className="absolute left-0 -top-[5px] h-[11px] w-px bg-ink/70 rotate-45" />
+      <span className="absolute right-0 -top-[5px] h-[11px] w-px bg-ink/70 rotate-45" />
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-paper px-2 font-mono text-[9px] tracking-[0.18em] uppercase text-ink-soft whitespace-nowrap">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+/** Small sheet-margin label for annotation columns. */
+function MarginLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="font-mono text-[9px] tracking-[0.35em] uppercase text-ink-faint leading-loose">
+      {children}
+    </div>
+  );
+}
+
 export default function ProjectsSection() {
-  const {
-    displayed: typedBio,
-    isDone: bioTyped,
-    ref: bioRef,
-  } = useTypewriter(BACKEND_PROFILE.bio, { speed: 14, startDelay: 200 });
+  const bioWords = BACKEND_PROFILE.bio.split(" ");
 
   return (
-    <div className="w-full bg-[#060606] relative z-10">
-      {/* SECTION 01: OPERATOR BIO */}
+    <div className="w-full relative">
+      {/* ════ SHEET 02 — OPERATOR PROFILE ════ */}
       <section
         id="section-bio"
-        className="w-full min-h-[50vh] flex flex-col justify-center border-t border-zinc-900/60 pt-40 pb-16 md:pt-56 md:pb-24 relative px-6"
+        className="px-6 md:px-16 pt-28 md:pt-36 pb-20 md:pb-28 border-b border-rule"
       >
-        <div className="max-w-6xl w-full mx-auto">
+        <div className="max-w-6xl mx-auto">
           <GlitchHeader
             title="The Operator"
-            subtitle="BACKEND ENGINEER // DJANGO · FASTAPI · PYTHON"
-            node="NODE_01 // OPERATOR PROFILE"
+            subtitle="SOFTWARE ENGINEER — DJANGO · FASTAPI · PYTHON"
+            node="SHEET 02 · OPERATOR PROFILE"
+            color="amber"
           />
 
-          <p
-            ref={bioRef as React.RefObject<HTMLParagraphElement>}
-            className="text-zinc-300 text-sm md:text-base font-light leading-relaxed font-mono bg-zinc-950/30 p-6 border border-zinc-800/40 border-l-2 border-l-cyan-500/50 backdrop-blur-sm rounded-sm min-h-[100px] max-w-4xl mt-6"
-          >
-            {typedBio}
-            {!bioTyped && (
-              <span className="inline-block w-[7px] h-[13px] bg-amber-500 ml-1 align-middle animate-pulse" />
-            )}
-          </p>
+          {/* General description — set large, inked in word by word */}
+          <div className="grid lg:grid-cols-[180px_1fr] gap-6 lg:gap-10">
+            <MarginLabel>
+              GENERAL
+              <br />
+              DESCRIPTION
+            </MarginLabel>
+            <p className="font-display font-light text-xl md:text-[28px] leading-[1.45] text-ink max-w-3xl">
+              {bioWords.map((word, i) => (
+                <motion.span
+                  key={i}
+                  className="inline-block mr-[0.28em]"
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ delay: 0.1 + i * 0.014, duration: 0.4 }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-10 mt-10 border-t border-zinc-900/70">
-            {Object.entries(BACKEND_PROFILE.skills).map(([category, items]) => (
-              <div key={category} className="space-y-3">
-                <span className="flex items-center space-x-2 text-[9px] tracking-widest font-mono text-zinc-500 uppercase select-none">
-                  <Layers size={10} className="text-cyan-500" />
-                  <span>{category}</span>
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {items.map((skill) => (
-                    <span
-                      key={skill}
-                      className="text-[10px] font-mono text-zinc-400 bg-zinc-950 px-3 py-1.5 border border-zinc-900 hover:border-cyan-500/30 hover:text-cyan-400 transition-all duration-200 cursor-default"
-                    >
-                      {skill}
+          {/* Bill of materials — capabilities */}
+          <div className="mt-20">
+            <div className="flex items-baseline justify-between mb-4">
+              <MarginLabel>BILL OF MATERIALS — CAPABILITIES</MarginLabel>
+              <span className="font-mono text-[9px] tracking-[0.2em] text-ink-faint uppercase hidden sm:inline">
+                QTY AS NOTED
+              </span>
+            </div>
+
+            <div className="border-t-2 border-ink">
+              {Object.entries(BACKEND_PROFILE.skills).map(
+                ([category, items], i) => (
+                  <div
+                    key={category}
+                    className="grid grid-cols-[56px_1fr] md:grid-cols-[72px_230px_1fr] gap-x-6 gap-y-3 py-5 px-3 -mx-3 border-b border-ink/15 group hover:bg-vellum/50 transition-colors duration-300"
+                  >
+                    <span className="font-mono text-[10px] text-safety pt-[2px]">
+                      S-{String(i + 1).padStart(2, "0")}
                     </span>
-                  ))}
+                    <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-ink-soft pt-[2px]">
+                      {category}
+                    </span>
+                    <div className="col-span-2 md:col-span-1 flex flex-wrap gap-x-6 gap-y-2.5">
+                      {items.map((skill) => (
+                        <span
+                          key={skill}
+                          className="font-mono text-[12px] text-ink border-b border-ink/25 pb-px hover:border-safety hover:text-safety transition-colors duration-200"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+
+          {/* Training record */}
+          <div className="mt-16">
+            <MarginLabel>TRAINING</MarginLabel>
+            <div className="mt-4 border-t border-ink/40">
+              {EDUCATION.map((edu, i) => (
+                <div
+                  key={edu.id}
+                  className="grid grid-cols-1 md:grid-cols-[72px_1fr_auto] gap-x-6 gap-y-2 py-5 border-b border-ink/15 items-baseline"
+                >
+                  <span className="font-mono text-[10px] text-safety">
+                    T-{String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <span className="font-display text-lg md:text-xl text-ink">
+                      {edu.institution}
+                    </span>
+                    <div className="mt-1 font-mono text-[10px] tracking-[0.12em] uppercase text-ink-soft">
+                      {edu.degree} — CGPA {edu.cgpa}
+                    </div>
+                  </div>
+                  <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-ink-faint text-left md:text-right">
+                    {edu.period}
+                    <br className="hidden md:block" />
+                    <span className="md:mt-1 inline-block">
+                      {edu.location}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 02: EXPERIENCE */}
+      {/* ════ SHEET 03 — DEPLOYMENT HISTORY ════ */}
       <section
         id="section-experience"
-        className="w-full min-h-[60vh] flex flex-col justify-center border-t border-zinc-900/60 py-20 relative px-6 overflow-hidden"
+        className="px-6 md:px-16 pt-24 md:pt-32 pb-20 md:pb-28 border-b border-rule"
       >
-        <div className="max-w-6xl w-full mx-auto">
+        <div className="max-w-6xl mx-auto">
           <GlitchHeader
             title="Work Experience"
-            subtitle="DEC 2022 – PRESENT // 3 ENGAGEMENTS"
-            node="NODE_02 // DEPLOYMENT HISTORY"
+            subtitle="DEC 2022 – PRESENT — 3 ENGAGEMENTS"
+            node="SHEET 03 · DEPLOYMENT HISTORY"
             color="cyan"
           />
 
-          <div className="relative space-y-8 ml-2 mt-10">
-            {/* Central tracking backbone line */}
-            <div className="absolute left-[7px] top-2 bottom-2 w-[1px] bg-gradient-to-b from-zinc-900 via-zinc-800/40 to-zinc-900/10 pointer-events-none" />
+          {WORK_EXPERIENCE.map((exp, idx) => (
+            <ScanReveal key={exp.id} color="cyan" delay={idx * 80}>
+              <article className="grid lg:grid-cols-[180px_1fr] gap-6 lg:gap-10 border-t border-ink/15 py-12 md:py-14 first-of-type:border-t-0">
+                {/* Margin column — detail letter, location, period dimension */}
+                <aside>
+                  <div className="font-mono text-[11px] tracking-[0.3em] text-safety uppercase">
+                    DETAIL {String.fromCharCode(65 + idx)}
+                  </div>
+                  <div className="mt-2 font-mono text-[9px] tracking-[0.18em] uppercase text-ink-faint">
+                    {exp.location}
+                  </div>
+                  <div className="mt-6 max-w-[160px]">
+                    <DimLine label={exp.period} />
+                  </div>
+                </aside>
 
-            {WORK_EXPERIENCE.map((exp) => (
-              <div
-                key={exp.id}
-                className="group/exp relative pl-8 pb-4 transition-all duration-500"
-              >
-                {/* 1. Terminal Node Ping Node Indicator */}
-                <div className="absolute left-0 top-1.5 w-4 h-4 bg-[#060606] border border-zinc-800 rounded-sm flex items-center justify-center group-hover/exp:border-cyan-500/70 group-hover/exp:rotate-90 transition-all duration-500 z-10">
-                  <div className="w-1 h-1 bg-zinc-700 rounded-sm group-hover/exp:bg-cyan-400 transition-all duration-300" />
-                </div>
-
-                {/* 2. Interactive Outer Corner Brackets (Only visible on card hover) */}
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-500/0 group-hover/exp:border-cyan-500/40 transition-all duration-300 pointer-events-none" />
-                <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500/0 group-hover/exp:border-cyan-500/40 transition-all duration-300 pointer-events-none" />
-
-                {/* 3. Card Content Wrapper */}
-                <div className="bg-[#070708]/10 group-hover/exp:bg-[#07070c]/40 border border-transparent group-hover/exp:border-zinc-900 p-5 rounded-sm transition-all duration-500">
-                  {/* Header Sub-row */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                    <div className="flex items-baseline gap-3">
-                      <h3 className="text-xl font-display font-light text-zinc-100 group-hover/exp:text-cyan-400 transition-colors duration-300">
-                        {exp.company}
-                      </h3>
-                      <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider select-none">
-                        // ENGAGEMENT_LOG
-                      </span>
-                    </div>
-
-                    <span className="self-start md:self-auto font-mono text-[10px] text-amber-500/80 bg-amber-500/5 px-2 py-1 border border-amber-500/10 uppercase tracking-tighter select-none">
-                      {exp.period}
-                    </span>
+                <div>
+                  <h3 className="font-display font-light text-3xl md:text-4xl text-ink leading-tight">
+                    {exp.company}
+                  </h3>
+                  <div className="mt-2 font-mono text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-ink-soft">
+                    {exp.role}
                   </div>
 
-                  {/* Operational Role Identifier */}
-                  <div className="text-xs font-mono text-zinc-500 mb-5 flex items-center gap-2 select-none">
-                    <span className="inline-block w-1 h-1 bg-zinc-700 rounded-full" />
-                    <span>ROLE:</span>
-                    <span className="text-zinc-400 italic">{exp.role}</span>
-                  </div>
-
-                  {/* 4. Refined Code Comment Achievement Point List */}
-                  <ul className="space-y-4">
+                  <ol className="mt-9 grid md:grid-cols-2 gap-x-12 gap-y-4">
                     {exp.achievements.map((a, i) => (
                       <li
                         key={i}
-                        className="group/item text-[11px] font-mono text-zinc-400 flex items-start gap-3 leading-relaxed transition-all duration-300"
+                        className="grid grid-cols-[30px_1fr] gap-3 group/item"
                       >
-                        {/* Static Terminal Prompt - Only color shifts on hover */}
-                        <span className="text-amber-500/30 group-hover/item:text-amber-500 group-hover/item:translate-x-1 transition-all duration-300 shrink-0 select-none pt-1">
-                          &gt;
+                        <span className="font-mono text-[10px] text-safety/70 group-hover/item:text-safety transition-colors pt-[3px] tabular-nums">
+                          {String(i + 1).padStart(2, "0")}
                         </span>
-
-                        {/* The Achievement Text - Clean, no trailing cursor */}
-                        <span className="group-hover/item:text-zinc-100 transition-colors duration-300">
+                        <span className="text-[13px] leading-relaxed text-ink-soft group-hover/item:text-ink transition-colors duration-200">
                           {a}
                         </span>
                       </li>
                     ))}
-                  </ul>
+                  </ol>
+
+                  <div className="mt-9 font-mono text-[10px] tracking-[0.15em] uppercase text-ink-faint">
+                    <span className="text-ink-soft">MATERIALS —</span>{" "}
+                    {exp.technologies.join(" / ")}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              </article>
+            </ScanReveal>
+          ))}
         </div>
       </section>
 
-      {/* SECTION 03: PROJECTS */}
+      {/* ════ SHEET 04 — PRODUCTION SYSTEMS ════ */}
       <section
         id="section-projects"
-        className="w-full min-h-[60vh] flex flex-col justify-center border-t border-zinc-900/60 py-20 relative px-6"
+        className="px-6 md:px-16 pt-24 md:pt-32 pb-20 md:pb-28 border-b border-rule"
       >
-        <div className="max-w-6xl w-full mx-auto">
+        <div className="max-w-6xl mx-auto">
           <GlitchHeader
             title="Technical Contributions"
-            subtitle={`FINTECH · AI · MOBILE // ${SYSTEM_MODULES.length} ACTIVE SYSTEMS`}
-            node="NODE_03 // PRODUCTION SYSTEMS"
+            subtitle={`FINTECH · AI · MOBILE — ${SYSTEM_MODULES.length} ACTIVE SYSTEMS`}
+            node="SHEET 04 · PRODUCTION SYSTEMS"
             color="amber"
           />
-          <div className="space-y-4 mt-10">
-            {SYSTEM_MODULES.map((module, i) => (
-              <ScanReveal key={module.id} delay={i * 100} color="amber">
-                <ProjectCard module={module} />
-              </ScanReveal>
-            ))}
-          </div>
+
+          {SYSTEM_MODULES.map((module, i) => (
+            <ScanReveal key={module.id} delay={i * 80} color="amber">
+              <ProjectCard module={module} index={i} />
+            </ScanReveal>
+          ))}
         </div>
       </section>
 
-      {/* SECTION 04: RESEARCH & CREDENTIALS */}
+      {/* ════ SHEET 05 — REFERENCES ════ */}
       <section
         id="section-research"
-        className="w-full min-h-[60vh] flex flex-col justify-center border-t border-zinc-900/60 py-20 relative px-6"
+        className="px-6 md:px-16 pt-24 md:pt-32 pb-20 md:pb-28 border-b border-rule"
       >
-        <div className="max-w-6xl w-full mx-auto">
+        <div className="max-w-6xl mx-auto">
           <GlitchHeader
             title="Research & Credentials"
-            subtitle={`IEEE PUBLICATION · QUANTUM ML · ${CERTIFICATIONS.length} CERTIFICATIONS`}
-            node="NODE_04 // RESEARCH & CREDENTIALS"
+            subtitle={`IEEE PUBLICATION · QUANTUM ML — ${CERTIFICATIONS.length} CERTIFICATIONS`}
+            node="SHEET 05 · REFERENCES"
             color="cyan"
           />
 
-          <div className="flex flex-col space-y-10 mt-10">
-            {/* 1. Publications Section (Full Width / Prominent Stack) */}
-            <div className="space-y-4">
-              <div className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase flex items-center gap-2">
-                <span className="w-1 h-1 bg-cyan-500 rounded-full" />
-                <span>// PEER_REVIEWED_JOURNALS</span>
-              </div>
+          {/* Peer-reviewed publication — index card */}
+          <MarginLabel>PEER-REVIEWED</MarginLabel>
+          <div className="mt-4 space-y-6">
+            {PUBLICATIONS.map((pub) => (
+              <ScanReveal key={pub.id} color="cyan">
+                <article className="relative border border-ink/30 bg-vellum/50 p-7 md:p-10">
+                  {/* Corner ticks */}
+                  <span className="absolute top-0 left-0 w-3 h-3 border-t border-l border-ink/60" />
+                  <span className="absolute top-0 right-0 w-3 h-3 border-t border-r border-ink/60" />
+                  <span className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-ink/60" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-ink/60" />
 
-              {PUBLICATIONS.map((pub, i) => (
-                <ScanReveal key={pub.id} delay={i * 80} color="amber">
-                  <div className="group relative bg-[#070708]/40 border border-zinc-900/80 p-6 rounded-md hover:border-zinc-800 transition-all duration-500 shadow-sm">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="space-y-2 max-w-3xl">
-                        <div className="flex items-center gap-3 text-[10px] font-mono">
-                          <span className="text-cyan-500 font-semibold">
-                            {pub.venue}
-                          </span>
-                          <span className="text-zinc-700">/</span>
-                          <span className="text-zinc-500">{pub.date}</span>
-                        </div>
-                        <h3 className="text-base font-display text-zinc-100 group-hover:text-amber-500 transition-colors duration-300">
-                          {pub.title}
-                        </h3>
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {pub.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-[8px] font-mono text-zinc-500 bg-zinc-950/80 px-2 py-0.5 border border-zinc-900/60 rounded-sm"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center shrink-0">
-                        <a
-                          href={pub.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[10px] font-mono text-zinc-400 border border-zinc-900 hover:border-cyan-500/30 hover:text-cyan-400 bg-zinc-950 px-4 py-2 transition-all duration-300 flex items-center gap-1.5 rounded-sm"
-                        >
-                          READ_SPEC <ArrowUpRight size={11} />
-                        </a>
-                      </div>
-                    </div>
+                  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-[9px] md:text-[10px] tracking-[0.18em] uppercase">
+                    <span className="text-draft">{pub.venue}</span>
+                    <span className="text-ink-faint">{pub.date}</span>
                   </div>
-                </ScanReveal>
-              ))}
-            </div>
 
-            {/* Separator Line */}
-            <div className="h-px w-full bg-gradient-to-r from-zinc-900 via-zinc-800/40 to-transparent" />
+                  <h3 className="mt-4 font-display font-light text-2xl md:text-[32px] leading-snug text-ink max-w-3xl">
+                    {pub.title}
+                  </h3>
 
-            {/* 2. Certifications Section (Linear Grid) */}
-            <div className="space-y-4">
-              <div className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase flex items-center gap-2">
-                <span className="w-1 h-1 bg-amber-500 rounded-full" />
-                <span>// VERIFIED_CREDENTIALS</span>
-              </div>
+                  <p className="mt-4 font-mono text-[10px] leading-relaxed text-ink-soft max-w-3xl">
+                    {pub.authors}
+                  </p>
+                  <p className="mt-1 font-mono text-[9px] text-ink-faint italic">
+                    {pub.authorNote}
+                  </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {CERTIFICATIONS.map((cert, i) => (
-                  <ScanReveal key={cert.id} delay={i * 100} color="cyan">
-                    <div className="group relative bg-[#070708]/20 border border-zinc-900/80 p-5 rounded-md hover:border-zinc-800/80 hover:bg-[#07070c]/40 transition-all duration-500 h-30 flex flex-col justify-between">
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center text-[9px] font-mono">
-                          <span className="text-amber-500 font-medium tracking-wide">
-                            {cert.issuer}
-                          </span>
-                          <span className="text-zinc-600">{cert.date}</span>
-                        </div>
-                        <h3 className="text-xs font-mono text-zinc-300 group-hover:text-cyan-400 transition-colors duration-300 leading-snug">
-                          {cert.title}
-                        </h3>
-                      </div>
+                  <p className="mt-5 text-[13px] leading-relaxed text-ink-soft max-w-3xl">
+                    {pub.summary}
+                  </p>
 
-                      <div className="flex justify-end pt-4 mt-auto border-t border-zinc-900/40">
-                        <a
-                          href={cert.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[9px] font-mono text-zinc-500 hover:text-amber-400 flex items-center gap-1 transition-colors duration-200"
-                        >
-                          VIEW_CERT <ArrowUpRight size={10} />
-                        </a>
-                      </div>
+                  <div className="mt-7 flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-ink/15">
+                    <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-ink-faint">
+                      {pub.tags.join(" · ")}
                     </div>
-                  </ScanReveal>
-                ))}
-              </div>
+                    <a
+                      href={pub.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/see font-mono text-[10px] tracking-[0.25em] uppercase text-draft border-b border-draft/40 hover:border-draft pb-px transition-colors"
+                    >
+                      SEE PUBLICATION{" "}
+                      <span className="inline-block transition-transform duration-200 group-hover/see:translate-x-0.5 group-hover/see:-translate-y-0.5">
+                        ↗
+                      </span>
+                    </a>
+                  </div>
+                </article>
+              </ScanReveal>
+            ))}
+          </div>
+
+          {/* Verified credentials — catalog rows */}
+          <div className="mt-20">
+            <MarginLabel>VERIFIED CREDENTIALS</MarginLabel>
+            <div className="mt-4 border-t border-ink/40">
+              {CERTIFICATIONS.map((cert, i) => (
+                <a
+                  key={cert.id}
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid grid-cols-[48px_1fr_auto] md:grid-cols-[72px_210px_1fr_auto] items-baseline gap-x-6 gap-y-2 border-b border-ink/15 py-6 group hover:bg-vellum/60 transition-colors duration-300"
+                >
+                  <span className="font-mono text-[10px] text-safety">
+                    C-{String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="hidden md:block font-mono text-[10px] tracking-[0.15em] uppercase text-ink-soft">
+                    {cert.issuer} — {cert.date}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="font-display text-lg md:text-xl text-ink group-hover:text-draft transition-colors duration-300 leading-snug block">
+                      {cert.title}
+                    </span>
+                    <span className="md:hidden mt-1 font-mono text-[9px] tracking-[0.12em] uppercase text-ink-faint block">
+                      {cert.issuer} — {cert.date}
+                    </span>
+                    <span className="hidden md:block mt-2 text-[12px] leading-relaxed text-ink-faint max-w-xl">
+                      {cert.summary}
+                    </span>
+                    <span className="mt-2 font-mono text-[9px] tracking-[0.15em] uppercase text-ink-faint block">
+                      {cert.tags.join(" · ")}
+                    </span>
+                  </span>
+                  <span className="font-mono text-[9px] tracking-[0.25em] uppercase text-draft opacity-60 group-hover:opacity-100 transition-opacity">
+                    VERIFY{" "}
+                    <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                      ↗
+                    </span>
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
         </div>

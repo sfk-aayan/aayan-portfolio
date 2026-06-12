@@ -1,102 +1,65 @@
-import React, { useState, useEffect } from "react";
 import { PHILOSOPHY_NODES } from "../../data";
-import { Shield, Hammer, Compass, GitBranch } from "lucide-react";
 import { useLiveUTC } from "../../hooks/useLiveUTC";
-import { useTypewriter } from "../../hooks/useTypewriter";
 import { GlitchHeader } from "../UI/GlitchHeader";
+import ScanReveal from "../UI/ScanReveal";
 
+/**
+ * Sheet 06 — General Notes. Every drawing set closes with them:
+ * numbered notes, terse references, time of issue.
+ */
 export default function PhilosophySection() {
   const liveUTC = useLiveUTC(500);
-
-  const [initialUtc] = useState(
-    () => `UTC_SYNCHRONICITY: ${new Date().toISOString()}`,
-  );
-  const {
-    displayed: typedUTC,
-    isDone: utcTyped,
-    ref: utcRef,
-  } = useTypewriter(initialUtc, { speed: 30, startDelay: 1000 });
-
-  const getIcon = (title: string) => {
-    switch (title.toLowerCase()) {
-      case "api first":
-        return <Shield size={12} className="text-cyan-500" />;
-      case "automation bias":
-        return <Hammer size={12} className="text-amber-500" />;
-      case "production mindset":
-        return <Compass size={12} className="text-emerald-500" />;
-      default:
-        return <GitBranch size={12} className="text-zinc-500" />;
-    }
-  };
 
   return (
     <section
       id="section-philosophy"
-      className="relative w-full bg-[#060606] px-6 py-20 md:px-12 md:py-32 border-t border-zinc-900/60 min-h-screen lg:min-h-screen flex items-center justify-start"
+      className="px-6 md:px-16 pt-24 md:pt-32 pb-24 md:pb-32 relative"
     >
-      <div className="max-w-6xl w-full mx-auto grid grid-cols-1 gap-8 items-center">
-        {/* Content Block (Left Column) */}
-        <div className="flex flex-col space-y-6 text-left">
-          {/* Integrated the high-visibility Glitch Header */}
-          <GlitchHeader
-            title="Core Principles"
-            subtitle="HOW I BUILD // WHAT I VALUE"
-            node="NODE_05 // ENGINEERING PRINCIPLES"
-            color="emerald"
-          />
+      <div className="max-w-6xl mx-auto">
+        <GlitchHeader
+          title="Core Principles"
+          subtitle="HOW I BUILD — WHAT I VALUE"
+          node="SHEET 06 · GENERAL NOTES"
+          color="emerald"
+        />
 
-          <div className="flex flex-col border border-zinc-900/80 rounded bg-[#070708]/30 overflow-hidden clip-tech-corners shadow-[0_0_30px_rgba(245,158,11,0.01)] hover:border-zinc-800 transition-colors duration-500 divide-y divide-zinc-900/80">
+        <ScanReveal color="amber">
+          <div className="grid md:grid-cols-3 gap-px bg-ink/20 border border-ink/20">
             {PHILOSOPHY_NODES.map((node, index) => (
               <div
                 key={index}
-                className="flex flex-col space-y-4 p-5 md:p-6 hover:bg-[#07070c]/80 hover:translate-x-1 transition-all duration-300 group"
+                className="relative bg-paper p-8 md:p-10 flex flex-col group hover:bg-vellum/70 transition-colors duration-500"
               >
-                <div className="flex items-center justify-between text-[10px] tracking-widest font-mono text-zinc-500 select-none">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-cyan-500 font-semibold group-hover:text-amber-500 transition-colors duration-300">
-                      0{index + 1}
-                    </span>
-                    <span className="text-zinc-700">/</span>
-                    <span>{node.title}</span>
-                  </div>
-                  {getIcon(node.title)}
+                {/* Corner brackets register the note under inspection */}
+                <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-safety opacity-0 scale-50 origin-top-left group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pointer-events-none" />
+                <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-safety opacity-0 scale-50 origin-bottom-right group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pointer-events-none" />
+
+                <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-safety">
+                  N{index + 1} — {node.title}
                 </div>
 
-                <h3 className="text-lg font-normal tracking-tight text-zinc-200 font-display group-hover:text-amber-500 group-hover:tracking-wide transition-all duration-300">
+                <h3 className="mt-5 font-display font-light italic text-2xl md:text-[26px] leading-snug text-ink">
                   {node.principle}
                 </h3>
 
-                <p className="text-zinc-400 text-xs md:text-sm font-light leading-relaxed font-mono">
+                <p className="mt-5 text-[13px] leading-relaxed text-ink-soft flex-1">
                   {node.description}
                 </p>
 
-                <div className="pt-2">
-                  <span className="text-[9px] tracking-wider font-mono text-zinc-400 border border-zinc-900/60 px-3 py-1.5 rounded bg-zinc-950/80 clip-tech-sm group-hover:border-cyan-500/20 group-hover:text-cyan-400 group-hover:scale-[1.02] group-hover:-translate-y-0.5 hover:shadow-[0_0_12px_rgba(6,182,212,0.1)] transition-all duration-300 inline-block">
-                    METRIC: {node.metric}
-                  </span>
+                <div className="mt-9 pt-4 border-t border-ink/15 font-mono text-[9px] tracking-[0.18em] uppercase text-ink-faint group-hover:text-ink-soft transition-colors duration-300">
+                  REF — {node.metric}
                 </div>
               </div>
             ))}
           </div>
+        </ScanReveal>
 
-          {/* UTC Clock and info */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-[9px] tracking-[0.2em] font-mono text-zinc-600 pt-8 mt-6 border-t border-zinc-900/80 w-full select-none gap-4">
-            <div className="flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span
-                ref={utcRef as React.RefObject<HTMLSpanElement>}
-                className="font-mono text-zinc-400"
-              >
-                {utcTyped
-                  ? `UTC_SYNCHRONICITY: ${liveUTC || "2026-05-24T20:03:52.421Z"}`
-                  : typedUTC}
-              </span>
-            </div>
-            <div className="hover:text-amber-500/60 transition-colors duration-500 cursor-default">
-              NO DECORATIVE CYCLES ALLOWED
-            </div>
-          </div>
+        {/* Time of issue */}
+        <div className="mt-12 flex flex-col sm:flex-row justify-between gap-3 font-mono text-[9px] md:text-[10px] tracking-[0.2em] uppercase text-ink-faint">
+          <span className="tabular-nums">
+            TIME OF ISSUE — <span className="text-ink-soft">{liveUTC}</span>
+          </span>
+          <span>NO DECORATIVE CYCLES ALLOWED</span>
         </div>
       </div>
     </section>
